@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Jane Doe, Cornwall</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 5rem;
+      align-items: start;
+    }
+    .contact-info h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+    .contact-block {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--sand);
+    }
+    .contact-block:last-child { border-bottom: none; }
+    .contact-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--stone);
+      margin-bottom: 0.4rem;
+    }
+    .contact-value {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--ink);
+    }
+    .contact-value a { color: var(--coast); }
+    .contact-value a:hover { text-decoration: underline; }
+    #success-msg {
+      display: none;
+      padding: 2rem;
+      background: var(--white);
+      box-shadow: var(--shadow-card);
+      text-align: center;
+    }
+    #success-msg h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 0.75rem;
+    }
+    @media (max-width: 768px) {
+      .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <button class="nav-toggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Biography</a></li>
+      <li><a href="location.html">Location</a></li>
+      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="sold.html">Sold Works</a></li>
+      <li><a href="forsale.html">For Sale</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+    <div class="page-header">
+      <p class="subtitle">Get in touch</p>
+      <h1>Contact</h1>
+    </div>
+
+    <div class="contact-layout">
+
+      <div class="contact-info">
+        <h2>We'd love to hear from you</h2>
+
+        <div class="contact-block">
+          <p class="contact-label">Email</p>
+          <!-- EDIT: Replace with real email -->
+          <p class="contact-value"><a href="mailto:jane@example.com">jane@example.com</a></p>
+        </div>
+
+        <div class="contact-block">
+          <p class="contact-label">Studio address</p>
+          <p class="contact-value">
+            Studio Name<br>
+            Street Address<br>
+            Penzance, Cornwall<br>
+            TR18 XXX
+          </p>
+          <p style="font-size:0.85rem;color:var(--slate);margin-top:0.5rem;">Studio visits by appointment only.</p>
+        </div>
+
+        <div class="contact-block">
+          <p class="contact-label">Response time</p>
+          <p class="contact-value">Within 2 working days</p>
+        </div>
+
+        <div class="contact-block">
+          <p class="contact-label">Commissions</p>
+          <p class="contact-value">Currently open</p>
+          <p style="font-size:0.85rem;color:var(--slate);margin-top:0.5rem;">
+            I welcome enquiries about commissioned work — please describe your idea in the form and I'll get back to you.
+          </p>
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <div>
+        <form id="contact-form" novalidate>
+          <div class="form-group">
+            <label for="c-name">Your name <span style="color:var(--coast)">*</span></label>
+            <input type="text" id="c-name" name="name" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label for="c-email">Email address <span style="color:var(--coast)">*</span></label>
+            <input type="email" id="c-email" name="email" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="c-subject">Subject</label>
+            <select id="c-subject" name="subject">
+              <option value="general">General enquiry</option>
+              <option value="commission">Commission enquiry</option>
+              <option value="visit">Studio visit</option>
+              <option value="press">Press / media</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="c-message">Message <span style="color:var(--coast)">*</span></label>
+            <textarea id="c-message" name="message" rows="5" required></textarea>
+          </div>
+          <div class="form-group" style="display:flex;gap:0.75rem;align-items:flex-start;">
+            <input type="checkbox" id="c-gdpr" name="gdpr" required style="width:auto;margin-top:0.2rem;flex-shrink:0;">
+            <label for="c-gdpr" style="text-transform:none;font-size:0.85rem;letter-spacing:0;color:var(--slate);">
+              I agree that Jane Doe may use my details to respond to this enquiry. <a href="privacy.html" style="color:var(--coast);">Privacy Policy</a>. <span style="color:var(--coast)">*</span>
+            </label>
+          </div>
+          <div id="c-error" style="display:none;color:#b91c1c;font-size:0.85rem;margin-bottom:1rem;"></div>
+          <button type="submit" class="btn btn-filled" style="width:100%;">Send message</button>
+        </form>
+
+        <div id="success-msg">
+          <h3>Message sent</h3>
+          <p style="color:var(--slate);">Thank you — I'll be in touch within 2 working days.</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
+    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+  </footer>
+
+  <div id="cookie-banner" role="region" aria-label="Cookie consent">
+    <p>This site uses cookies to display maps and remember your preferences. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    <div class="cookie-actions">
+      <button id="cookie-decline" class="btn" style="border-color:var(--stone);color:var(--linen);font-size:0.72rem;padding:0.5rem 1rem;">Decline</button>
+      <button id="cookie-accept" class="btn btn-coast" style="font-size:0.72rem;padding:0.5rem 1rem;border-color:var(--coast);color:var(--coast);">Accept</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    const form = document.getElementById('contact-form');
+    const errBox = document.getElementById('c-error');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      errBox.style.display = 'none';
+      const name    = document.getElementById('c-name').value.trim();
+      const email   = document.getElementById('c-email').value.trim();
+      const message = document.getElementById('c-message').value.trim();
+      const gdpr    = document.getElementById('c-gdpr').checked;
+      if (!name || !email || !message || !gdpr) {
+        errBox.textContent = 'Please fill in all required fields and accept the privacy notice.';
+        errBox.style.display = 'block';
+        return;
+      }
+      // mailto fallback — replace with Formspree or similar (see buy.html notes)
+      const subject = encodeURIComponent('Website contact: ' + document.getElementById('c-subject').value);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+      window.location.href = `mailto:jane@example.com?subject=${subject}&body=${body}`;
+      form.style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    });
+  </script>
+</body>
+</html>

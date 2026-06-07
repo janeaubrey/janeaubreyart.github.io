@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sold Works — Jane Doe, Cornwall</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sold-badge {
+      display: inline-block;
+      background: var(--slate);
+      color: var(--linen);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .gallery-card-meta { margin-top: 0.2rem; }
+    .empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--stone);
+    }
+    .empty-state p { font-family: var(--font-display); font-size: 1.5rem; font-weight: 300; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <button class="nav-toggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Biography</a></li>
+      <li><a href="location.html">Location</a></li>
+      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="sold.html">Sold Works</a></li>
+      <li><a href="forsale.html">For Sale</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+    <div class="page-header">
+      <p class="subtitle">Archive</p>
+      <h1>Sold Works</h1>
+    </div>
+
+    <div id="gallery" class="gallery-grid">
+      <div class="empty-state" id="empty">
+        <p>No sold works listed yet.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-modal="true" role="dialog">
+    <span class="lightbox-close" aria-label="Close">&times;</span>
+    <img src="" alt="">
+  </div>
+
+  <footer>
+    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
+    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+  </footer>
+
+  <div id="cookie-banner" role="region" aria-label="Cookie consent">
+    <p>This site uses cookies to display maps and remember your preferences. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    <div class="cookie-actions">
+      <button id="cookie-decline" class="btn" style="border-color:var(--stone);color:var(--linen);font-size:0.72rem;padding:0.5rem 1rem;">Decline</button>
+      <button id="cookie-accept" class="btn btn-coast" style="font-size:0.72rem;padding:0.5rem 1rem;border-color:var(--coast);color:var(--coast);">Accept</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Load sold works from sold.json
+    fetch('data/sold.json')
+      .then(r => r.json())
+      .then(items => {
+        const grid = document.getElementById('gallery');
+        const empty = document.getElementById('empty');
+        if (!items.length) return;
+        empty.remove();
+        items.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'gallery-card';
+          card.innerHTML = `
+            <img
+              src="images/sold/${item.image}"
+              alt="${item.title}"
+              data-lightbox="images/sold/${item.image}"
+              data-title="${item.title}"
+              loading="lazy">
+            <div class="gallery-card-body">
+              <span class="sold-badge">Sold</span>
+              <h3 class="gallery-card-title">${item.title}</h3>
+              <p class="gallery-card-meta">${item.medium || ''} ${item.year ? '· ' + item.year : ''}</p>
+            </div>`;
+          grid.appendChild(card);
+        });
+        // Re-init lightbox after dynamic content added
+        document.querySelectorAll('[data-lightbox]').forEach(el => {
+          el.style.cursor = 'zoom-in';
+          el.addEventListener('click', () => {
+            const lb = document.getElementById('lightbox');
+            lb.querySelector('img').src = el.dataset.lightbox;
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+          });
+        });
+      })
+      .catch(() => {}); // silently fail if no data file yet
+  </script>
+</body>
+</html>

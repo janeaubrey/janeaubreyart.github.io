@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Purchase Enquiry — Jane Doe, Cornwall</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .buy-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+      margin-bottom: 5rem;
+    }
+    .artwork-summary {
+      position: sticky;
+      top: calc(var(--nav-height) + 2rem);
+      background: var(--white);
+      box-shadow: var(--shadow-soft);
+    }
+    .artwork-summary img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+    }
+    .artwork-summary-body {
+      padding: 1.5rem;
+    }
+    .artwork-summary-body h2 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+    .artwork-summary-price {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--coast-dark);
+    }
+    .bacs-box {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      background: var(--linen);
+      border: 1px solid var(--sand);
+      font-size: 0.85rem;
+      color: var(--slate);
+      line-height: 1.8;
+    }
+    .bacs-box strong {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--stone);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Form side */
+    .buy-form-wrap h2 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+    .buy-form-wrap .lead {
+      color: var(--slate);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    /* Success message */
+    #success-msg {
+      display: none;
+      text-align: center;
+      padding: 3rem 2rem;
+      background: var(--white);
+      box-shadow: var(--shadow-card);
+    }
+    #success-msg h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+    #success-msg p { color: var(--slate); margin-bottom: 1rem; }
+
+    /* Required field marker */
+    .required { color: var(--coast); }
+
+    @media (max-width: 768px) {
+      .buy-layout { grid-template-columns: 1fr; gap: 2rem; }
+      .artwork-summary { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <button class="nav-toggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Biography</a></li>
+      <li><a href="location.html">Location</a></li>
+      <li><a href="reviews.html">Reviews</a></li>
+      <li><a href="sold.html">Sold Works</a></li>
+      <li><a href="forsale.html">For Sale</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+    <div class="page-header">
+      <p class="subtitle">Purchase</p>
+      <h1>Enquire to Buy</h1>
+    </div>
+
+    <div class="buy-layout">
+
+      <!-- Artwork summary panel -->
+      <div class="artwork-summary">
+        <img id="artwork-img" src="images/gallery/placeholder.jpg" alt="">
+        <div class="artwork-summary-body">
+          <h2 id="artwork-title">—</h2>
+          <p class="artwork-summary-price" id="artwork-price">—</p>
+
+          <div class="bacs-box">
+            <strong>Payment method</strong>
+            Payment is by bank transfer (BACS). Once we confirm availability and your 
+            enquiry is accepted, we will reply by email with our bank details. 
+            There are no card processing fees — you transfer the amount directly, 
+            and we dispatch your work once payment clears.
+          </div>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div class="buy-form-wrap">
+        <h2>Your details</h2>
+        <p class="lead">
+          Please fill in the form below. We'll come back to you within 2 working days 
+          to confirm availability and share payment information. Fields marked 
+          <span class="required">*</span> are required.
+        </p>
+
+        <form id="buy-form" novalidate>
+          <!-- Hidden fields populated by JS from URL params -->
+          <input type="hidden" id="f-artwork-id" name="artwork_id">
+          <input type="hidden" id="f-artwork-title" name="artwork_title">
+          <input type="hidden" id="f-artwork-price" name="artwork_price">
+
+          <div class="form-group">
+            <label for="f-name">Full name <span class="required">*</span></label>
+            <input type="text" id="f-name" name="name" autocomplete="name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="f-email">Email address <span class="required">*</span></label>
+            <input type="email" id="f-email" name="email" autocomplete="email" required>
+          </div>
+
+          <div class="form-group">
+            <label for="f-phone">Phone number (optional)</label>
+            <input type="tel" id="f-phone" name="phone" autocomplete="tel">
+          </div>
+
+          <div class="form-group">
+            <label for="f-address">Delivery address <span class="required">*</span></label>
+            <textarea id="f-address" name="address" rows="4" autocomplete="street-address" required
+              placeholder="House / flat name or number&#10;Street&#10;Town&#10;County&#10;Postcode"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="f-message">Any questions or notes (optional)</label>
+            <textarea id="f-message" name="message" rows="3"></textarea>
+          </div>
+
+          <!-- GDPR consent -->
+          <div class="form-group" style="display:flex;gap:0.75rem;align-items:flex-start;">
+            <input type="checkbox" id="f-gdpr" name="gdpr" required
+              style="width:auto;margin-top:0.2rem;flex-shrink:0;">
+            <label for="f-gdpr" style="text-transform:none;font-size:0.85rem;letter-spacing:0;color:var(--slate);">
+              I agree that Jane Doe may use the details above to process this enquiry and contact me in relation to it, as described in the <a href="privacy.html" style="color:var(--coast);">Privacy Policy</a>. <span class="required">*</span>
+            </label>
+          </div>
+
+          <div id="form-error" style="display:none;color:#b91c1c;font-size:0.85rem;margin-bottom:1rem;"></div>
+
+          <button type="submit" class="btn btn-filled" style="width:100%;text-align:center;">
+            Send enquiry
+          </button>
+        </form>
+
+        <!-- Success state (shown after submit) -->
+        <div id="success-msg">
+          <h3>Enquiry received</h3>
+          <p>Thank you — we'll be in touch within 2 working days with payment details and next steps.</p>
+          <p style="font-size:0.85rem;">A copy of your enquiry has been noted. If you don't hear from us, please check your spam folder or <a href="contact.html" style="color:var(--coast);">contact us directly</a>.</p>
+          <div class="mt-2">
+            <a href="forsale.html" class="btn">Back to works for sale</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
+    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+  </footer>
+
+  <div id="cookie-banner" role="region" aria-label="Cookie consent">
+    <p>This site uses cookies to display maps and remember your preferences. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    <div class="cookie-actions">
+      <button id="cookie-decline" class="btn" style="border-color:var(--stone);color:var(--linen);font-size:0.72rem;padding:0.5rem 1rem;">Decline</button>
+      <button id="cookie-accept" class="btn btn-coast" style="font-size:0.72rem;padding:0.5rem 1rem;border-color:var(--coast);color:var(--coast);">Accept</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // --- Populate form from URL params ---
+    const params = new URLSearchParams(location.search);
+    const title = params.get('title') || 'Selected work';
+    const price = params.get('price') || '';
+    const id    = params.get('id') || '';
+
+    document.getElementById('artwork-title').textContent = title;
+    document.getElementById('artwork-price').textContent = price ? '£' + Number(price).toLocaleString('en-GB') : '';
+    document.getElementById('f-artwork-id').value    = id;
+    document.getElementById('f-artwork-title').value = title;
+    document.getElementById('f-artwork-price').value = price;
+
+    // Try to load artwork image from forsale.json
+    fetch('data/forsale.json')
+      .then(r => r.json())
+      .then(items => {
+        const item = items.find(i => String(i.id) === id);
+        if (item) {
+          const img = document.getElementById('artwork-img');
+          img.src = 'images/gallery/' + item.image;
+          img.alt = item.title;
+        }
+      }).catch(() => {});
+
+    // --- Form submission ---
+    // NOTE: This form needs a backend or form service to actually send emails.
+    // Options: Formspree (free tier), Netlify Forms, or a simple PHP mailer.
+    // Replace the action URL below with your chosen service.
+    // See housekeeping.html for setup instructions.
+
+    const form = document.getElementById('buy-form');
+    const errBox = document.getElementById('form-error');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      errBox.style.display = 'none';
+
+      // Basic validation
+      const name    = document.getElementById('f-name').value.trim();
+      const email   = document.getElementById('f-email').value.trim();
+      const address = document.getElementById('f-address').value.trim();
+      const gdpr    = document.getElementById('f-gdpr').checked;
+
+      if (!name || !email || !address || !gdpr) {
+        errBox.textContent = 'Please fill in all required fields and accept the privacy notice.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      // -------------------------------------------------------
+      // OPTION A: Formspree — sign up at formspree.io, get your
+      // form endpoint, and replace the URL below:
+      //
+      // const response = await fetch('https://formspree.io/f/YOUR_ID', {
+      //   method: 'POST',
+      //   headers: { 'Accept': 'application/json' },
+      //   body: new FormData(form)
+      // });
+      // if (response.ok) { showSuccess(); } else { showError(); }
+      //
+      // OPTION B: mailto fallback (works without a backend,
+      // opens user's email client — less elegant but zero setup):
+      // -------------------------------------------------------
+
+      // TEMPORARY: mailto fallback until a form service is configured
+      const subject = encodeURIComponent(`Purchase enquiry: ${title}`);
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nPhone: ${document.getElementById('f-phone').value}\n\nDelivery address:\n${address}\n\nArtwork: ${title}\nPrice: £${price}\n\nNotes:\n${document.getElementById('f-message').value}`
+      );
+      window.location.href = `mailto:jane@example.com?subject=${subject}&body=${body}`;
+      showSuccess();
+    });
+
+    function showSuccess() {
+      form.style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
