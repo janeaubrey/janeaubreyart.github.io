@@ -3,25 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jane Doe — Artist & Photographer, Cornwall</title>
-  <meta name="description" content="Original paintings and photography by Jane Doe, based in Cornwall. Available to purchase.">
+  <title>Jane Aubrey Art — Painter, Cornwall</title>
+  <meta name="description" content="Original watercolours by Jane Aubrey, based in Cornwall. Available to purchase.">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    /* Hero */
     .hero {
       display: grid;
       grid-template-columns: 1fr 1fr;
       min-height: calc(90vh - var(--nav-height));
       gap: 0;
     }
-    .hero-image {
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-image img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
+    .hero-image { position: relative; overflow: hidden; }
+    .hero-image img { width: 100%; height: 100%; object-fit: cover; }
     .hero-image::after {
       content: '';
       position: absolute;
@@ -50,10 +43,7 @@
       color: var(--ink);
       margin-bottom: 1.5rem;
     }
-    .hero-title em {
-      font-style: italic;
-      color: var(--coast-dark);
-    }
+    .hero-title em { font-style: italic; color: var(--coast-dark); }
     .hero-body {
       font-size: 1rem;
       color: var(--slate);
@@ -62,8 +52,6 @@
       line-height: 1.8;
     }
     .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-    /* Bio section */
     .bio-section {
       padding: 6rem 0;
       display: grid;
@@ -71,10 +59,7 @@
       gap: 4rem;
       align-items: start;
     }
-    .bio-portrait {
-      position: sticky;
-      top: calc(var(--nav-height) + 2rem);
-    }
+    .bio-portrait { position: sticky; top: calc(var(--nav-height) + 2rem); }
     .bio-portrait img {
       width: 100%;
       aspect-ratio: 3/4;
@@ -95,11 +80,7 @@
       margin-bottom: 1.5rem;
       line-height: 1.15;
     }
-    .bio-text p {
-      color: var(--slate);
-      margin-bottom: 1.25rem;
-      font-size: 1rem;
-    }
+    .bio-text p { color: var(--slate); margin-bottom: 1.25rem; font-size: 1rem; }
     .bio-details {
       margin-top: 2.5rem;
       padding-top: 2rem;
@@ -115,12 +96,7 @@
       color: var(--stone);
       margin-bottom: 0.2rem;
     }
-    .bio-detail-value {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: var(--ink);
-    }
-
+    .bio-detail-value { font-family: var(--font-display); font-size: 1.1rem; color: var(--ink); }
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; min-height: auto; }
       .hero-image { height: 55vw; }
@@ -132,9 +108,8 @@
 </head>
 <body>
 
-  <!-- Navigation -->
   <nav>
-    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <a href="index.html" class="nav-brand">Jane Aubrey <span>Art</span></a>
     <button class="nav-toggle" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -148,18 +123,16 @@
     </ul>
   </nav>
 
-  <!-- Hero -->
   <section class="hero">
     <div class="hero-image">
-      <!-- Replace hero-bg.jpg with a wide landscape/studio shot -->
-      <img src="images/profile/hero-bg.jpg" alt="Jane Doe in her Cornish studio" loading="eager">
+      <img src="images/profile/cover.jpg" alt="Jane Aubrey watercolour" loading="eager">
     </div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Artist &amp; Photographer — Cornwall</p>
+      <p class="hero-eyebrow">Watercolour Painter — Cornwall</p>
       <h1 class="hero-title">Light,<br><em>land</em>,<br>&amp; sea.</h1>
       <p class="hero-body">
-        Original works inspired by the Cornish coast — its ever-changing light, 
-        ancient landscape, and the quiet drama of the Atlantic.
+        Original watercolours inspired by the Cornish landscape — its ever-changing light,
+        ancient moorland, and the quiet drama of the Atlantic coast.
       </p>
       <div class="hero-cta">
         <a href="forsale.html" class="btn btn-filled">View works for sale</a>
@@ -168,51 +141,40 @@
     </div>
   </section>
 
-  <!-- Biography -->
   <section id="biography">
     <div class="page" style="padding-top:0; padding-bottom:0;">
       <div class="bio-section">
 
         <div class="bio-portrait">
-          <!-- Replace profile.jpg with artist portrait -->
-          <img src="images/profile/profile.jpg" alt="Portrait of Jane Doe">
-          <p class="bio-portrait-caption">Jane Doe — Penzance, Cornwall</p>
+          <img src="images/profile/selfie.jpg" alt="Portrait of Jane Aubrey">
+          <p class="bio-portrait-caption">Jane Aubrey — Mawla, Cornwall</p>
         </div>
 
         <div class="bio-text">
           <h2>About the artist</h2>
-
-          <!-- =========================================
-               EDIT YOUR BIOGRAPHY TEXT BELOW
-               ========================================= -->
           <p>
-            Jane Doe is a painter and photographer working from her studio in Penzance, 
-            Cornwall. Her practice is rooted in the landscape of the far west — the moors, 
-            the cliffs, and the ever-present sea.
+            Jane Aubrey is a watercolour painter based in Mawla, near Redruth, in the
+            heart of Cornwall. Her work is rooted in the landscape of the far west —
+            the moors, the cliffs, and the ever-present Atlantic light.
           </p>
           <p>
-            Drawing on a background in fine art and years spent observing the Atlantic 
-            light, Jane creates works that balance observation with feeling. Each piece 
-            begins outdoors, often in difficult conditions, before being developed in 
-            the studio.
+            Working in watercolour, Jane creates pieces that balance careful observation
+            with a personal response to place. Each work begins with time spent outdoors
+            in the Cornish landscape before being developed in her studio at Carn Garth.
           </p>
           <p>
-            Her paintings are held in private collections across the UK and internationally. 
-            She exhibits regularly at galleries in Cornwall and beyond, and welcomes 
-            visitors to her studio by appointment.
+            Her paintings are available to purchase directly from the studio.
+            She welcomes visitors by appointment and is happy to discuss commissions.
           </p>
-          <!-- =========================================
-               END BIOGRAPHY TEXT
-               ========================================= -->
 
           <div class="bio-details">
             <div>
               <p class="bio-detail-label">Based in</p>
-              <p class="bio-detail-value">Penzance, Cornwall</p>
+              <p class="bio-detail-value">Mawla, Redruth, Cornwall</p>
             </div>
             <div>
               <p class="bio-detail-label">Medium</p>
-              <p class="bio-detail-value">Oil &amp; Photography</p>
+              <p class="bio-detail-value">Watercolour</p>
             </div>
             <div>
               <p class="bio-detail-label">Studio visits</p>
@@ -233,20 +195,18 @@
     </div>
   </section>
 
-  <!-- Footer -->
   <footer>
     <p>
-      &copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp;
+      &copy; <span id="yr"></span> Jane Aubrey Art. All rights reserved. &nbsp;|&nbsp;
       <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
       <a href="contact.html">Contact</a>
     </p>
-    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+    <p style="margin-top:0.5rem;">Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW &nbsp;|&nbsp; jane.mynne@live.co.uk</p>
   </footer>
 
-  <!-- Cookie Banner -->
   <div id="cookie-banner" role="region" aria-label="Cookie consent">
     <p>
-      This site uses cookies to display maps and remember your preferences. 
+      This site uses cookies to display maps and remember your preferences.
       See our <a href="privacy.html">Privacy Policy</a>.
     </p>
     <div class="cookie-actions">

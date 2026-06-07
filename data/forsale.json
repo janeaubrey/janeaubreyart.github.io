@@ -1,1 +1,9 @@
-[]
+[
+  {"id":1,"image":"painting1.jpg","title":"Painting 1","price":75,"medium":"Watercolour","dimensions":""},
+  {"id":2,"image":"painting2.jpg","title":"Painting 2","price":75,"medium":"Watercolour","dimensions":""},
+  {"id":3,"image":"painting3.jpg","title":"Painting 3","price":75,"medium":"Watercolour","dimensions":""},
+  {"id":4,"image":"painting4.jpg","title":"Painting 4","price":75,"medium":"Watercolour","dimensions":""},
+  {"id":5,"image":"painting5.jpg","title":"Painting 5","price":75,"medium":"Watercolour","dimensions":""},
+  {"id":6,"image":"painting6.jpg","title":"Painting 6","price":75,"medium":"Watercolour","dimensions":""},
+  {"id":7,"image":"painting7.jpg","title":"Painting 7","price":75,"medium":"Watercolour","dimensions":""}
+]
