@@ -3,58 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact — Jane Doe, Cornwall</title>
+  <title>Works For Sale — Jane Doe, Cornwall</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .contact-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      margin-bottom: 5rem;
-      align-items: start;
-    }
-    .contact-info h2 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 300;
-      margin-bottom: 2rem;
-    }
-    .contact-block {
-      margin-bottom: 2rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--sand);
-    }
-    .contact-block:last-child { border-bottom: none; }
-    .contact-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--stone);
-      margin-bottom: 0.4rem;
-    }
-    .contact-value {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      color: var(--ink);
-    }
-    .contact-value a { color: var(--coast); }
-    .contact-value a:hover { text-decoration: underline; }
-    #success-msg {
-      display: none;
-      padding: 2rem;
+    .sale-notice {
       background: var(--white);
+      border-left: 3px solid var(--coast);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 3rem;
+      font-size: 0.9rem;
+      color: var(--slate);
       box-shadow: var(--shadow-card);
+    }
+    .sale-notice strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+    .empty-state {
       text-align: center;
+      padding: 5rem 2rem;
+      color: var(--stone);
     }
-    #success-msg h3 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 300;
-      margin-bottom: 0.75rem;
-    }
-    @media (max-width: 768px) {
-      .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
-    }
+    .empty-state p { font-family: var(--font-display); font-size: 1.5rem; font-weight: 300; }
+    .gallery-card .gallery-card-body { padding-bottom: 1.5rem; }
   </style>
 </head>
 <body>
@@ -76,89 +47,29 @@
 
   <main class="page">
     <div class="page-header">
-      <p class="subtitle">Get in touch</p>
-      <h1>Contact</h1>
+      <p class="subtitle">Available now</p>
+      <h1>Works For Sale</h1>
     </div>
 
-    <div class="contact-layout">
+    <div class="sale-notice">
+      <strong>How to purchase:</strong> Click "Enquire to buy" on any piece. You'll receive a response with bank transfer details — payment is by BACS (direct bank transfer), with no extra fees for either party. Works are dispatched carefully packaged once payment is received.
+    </div>
 
-      <div class="contact-info">
-        <h2>We'd love to hear from you</h2>
-
-        <div class="contact-block">
-          <p class="contact-label">Email</p>
-          <!-- EDIT: Replace with real email -->
-          <p class="contact-value"><a href="mailto:jane@example.com">jane@example.com</a></p>
-        </div>
-
-        <div class="contact-block">
-          <p class="contact-label">Studio address</p>
-          <p class="contact-value">
-            Studio Name<br>
-            Street Address<br>
-            Penzance, Cornwall<br>
-            TR18 XXX
-          </p>
-          <p style="font-size:0.85rem;color:var(--slate);margin-top:0.5rem;">Studio visits by appointment only.</p>
-        </div>
-
-        <div class="contact-block">
-          <p class="contact-label">Response time</p>
-          <p class="contact-value">Within 2 working days</p>
-        </div>
-
-        <div class="contact-block">
-          <p class="contact-label">Commissions</p>
-          <p class="contact-value">Currently open</p>
-          <p style="font-size:0.85rem;color:var(--slate);margin-top:0.5rem;">
-            I welcome enquiries about commissioned work — please describe your idea in the form and I'll get back to you.
-          </p>
+    <div id="gallery" class="gallery-grid">
+      <div class="empty-state" id="empty">
+        <p>No works listed for sale at present.</p>
+        <div style="margin-top:1.5rem;">
+          <a href="contact.html" class="btn btn-coast">Enquire about commissions</a>
         </div>
       </div>
-
-      <!-- Contact form -->
-      <div>
-        <form id="contact-form" novalidate>
-          <div class="form-group">
-            <label for="c-name">Your name <span style="color:var(--coast)">*</span></label>
-            <input type="text" id="c-name" name="name" autocomplete="name" required>
-          </div>
-          <div class="form-group">
-            <label for="c-email">Email address <span style="color:var(--coast)">*</span></label>
-            <input type="email" id="c-email" name="email" autocomplete="email" required>
-          </div>
-          <div class="form-group">
-            <label for="c-subject">Subject</label>
-            <select id="c-subject" name="subject">
-              <option value="general">General enquiry</option>
-              <option value="commission">Commission enquiry</option>
-              <option value="visit">Studio visit</option>
-              <option value="press">Press / media</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="c-message">Message <span style="color:var(--coast)">*</span></label>
-            <textarea id="c-message" name="message" rows="5" required></textarea>
-          </div>
-          <div class="form-group" style="display:flex;gap:0.75rem;align-items:flex-start;">
-            <input type="checkbox" id="c-gdpr" name="gdpr" required style="width:auto;margin-top:0.2rem;flex-shrink:0;">
-            <label for="c-gdpr" style="text-transform:none;font-size:0.85rem;letter-spacing:0;color:var(--slate);">
-              I agree that Jane Doe may use my details to respond to this enquiry. <a href="privacy.html" style="color:var(--coast);">Privacy Policy</a>. <span style="color:var(--coast)">*</span>
-            </label>
-          </div>
-          <div id="c-error" style="display:none;color:#b91c1c;font-size:0.85rem;margin-bottom:1rem;"></div>
-          <button type="submit" class="btn btn-filled" style="width:100%;">Send message</button>
-        </form>
-
-        <div id="success-msg">
-          <h3>Message sent</h3>
-          <p style="color:var(--slate);">Thank you — I'll be in touch within 2 working days.</p>
-        </div>
-      </div>
-
     </div>
   </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" aria-modal="true" role="dialog">
+    <span class="lightbox-close" aria-label="Close">&times;</span>
+    <img src="" alt="">
+  </div>
 
   <footer>
     <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
@@ -176,27 +87,44 @@
   <script src="js/main.js"></script>
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
-    const form = document.getElementById('contact-form');
-    const errBox = document.getElementById('c-error');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      errBox.style.display = 'none';
-      const name    = document.getElementById('c-name').value.trim();
-      const email   = document.getElementById('c-email').value.trim();
-      const message = document.getElementById('c-message').value.trim();
-      const gdpr    = document.getElementById('c-gdpr').checked;
-      if (!name || !email || !message || !gdpr) {
-        errBox.textContent = 'Please fill in all required fields and accept the privacy notice.';
-        errBox.style.display = 'block';
-        return;
-      }
-      // mailto fallback — replace with Formspree or similar (see buy.html notes)
-      const subject = encodeURIComponent('Website contact: ' + document.getElementById('c-subject').value);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-      window.location.href = `mailto:jane@example.com?subject=${subject}&body=${body}`;
-      form.style.display = 'none';
-      document.getElementById('success-msg').style.display = 'block';
-    });
+
+    fetch('data/forsale.json')
+      .then(r => r.json())
+      .then(items => {
+        const grid = document.getElementById('gallery');
+        const empty = document.getElementById('empty');
+        if (!items.length) return;
+        empty.remove();
+        items.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'gallery-card';
+          card.innerHTML = `
+            <img
+              src="images/gallery/${item.image}"
+              alt="${item.title}"
+              data-lightbox="images/gallery/${item.image}"
+              data-title="${item.title}"
+              loading="lazy">
+            <div class="gallery-card-body">
+              <h3 class="gallery-card-title">${item.title}</h3>
+              <p class="gallery-card-meta">${item.medium || ''} ${item.dimensions ? '· ' + item.dimensions : ''}</p>
+              <p class="gallery-card-price">£${Number(item.price).toLocaleString('en-GB')}</p>
+              <a href="buy.html?id=${item.id}&title=${encodeURIComponent(item.title)}&price=${item.price}" class="btn btn-coast" style="font-size:0.75rem;padding:0.55rem 1.1rem;">Enquire to buy</a>
+            </div>`;
+          grid.appendChild(card);
+        });
+        // Lightbox
+        document.querySelectorAll('[data-lightbox]').forEach(el => {
+          el.style.cursor = 'zoom-in';
+          el.addEventListener('click', () => {
+            const lb = document.getElementById('lightbox');
+            lb.querySelector('img').src = el.dataset.lightbox;
+            lb.classList.add('open');
+            document.body.style.overflow = 'hidden';
+          });
+        });
+      })
+      .catch(() => {});
   </script>
 </body>
 </html>

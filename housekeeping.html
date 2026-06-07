@@ -3,128 +3,567 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Works For Sale — Jane Doe, Cornwall</title>
+  <title>Site Management — Jane Doe</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .sale-notice {
+    body { background: #f0ece3; }
+    .hk-header {
+      background: var(--slate-dark);
+      color: var(--linen);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hk-header h1 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 300;
+    }
+    .hk-header p { font-size: 0.8rem; color: var(--stone); margin-top: 0.2rem; }
+    .hk-header a { color: var(--coast); font-size: 0.85rem; }
+
+    .hk-page { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+    .hk-section {
       background: var(--white);
-      border-left: 3px solid var(--coast);
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 3rem;
-      font-size: 0.9rem;
-      color: var(--slate);
       box-shadow: var(--shadow-card);
+      margin-bottom: 2rem;
+      overflow: hidden;
     }
-    .sale-notice strong {
-      color: var(--ink);
-      font-weight: 500;
+    .hk-section-head {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .empty-state {
+    .hk-section-head h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 400;
+    }
+    .hk-section-body { padding: 1.5rem; }
+
+    /* Status badge */
+    .badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+    }
+    .badge-info { background: #dbeafe; color: #1e40af; }
+    .badge-warn { background: #fef3c7; color: #92400e; }
+
+    /* Picture list */
+    .pic-list { list-style: none; }
+    .pic-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--sand);
+    }
+    .pic-item:last-child { border-bottom: none; }
+    .pic-thumb {
+      width: 60px; height: 60px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--sand);
+    }
+    .pic-info { flex: 1; }
+    .pic-title { font-weight: 500; font-size: 0.95rem; }
+    .pic-meta { font-size: 0.8rem; color: var(--stone); }
+    .pic-actions { display: flex; gap: 0.5rem; }
+
+    .btn-sm {
+      font-size: 0.7rem;
+      padding: 0.35rem 0.8rem;
+      letter-spacing: 0.08em;
+    }
+    .btn-danger { border-color: #b91c1c; color: #b91c1c; }
+    .btn-danger:hover { background: #b91c1c; color: white; }
+    .btn-sold { border-color: var(--slate); color: var(--slate); }
+    .btn-sold:hover { background: var(--slate); color: var(--linen); }
+
+    /* Add form */
+    .add-form { border-top: 1px solid var(--sand); padding-top: 1.5rem; margin-top: 1.5rem; }
+    .add-form h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 1.25rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* File upload */
+    .file-upload-wrap {
+      border: 2px dashed var(--sand);
+      padding: 2rem;
       text-align: center;
-      padding: 5rem 2rem;
-      color: var(--stone);
+      cursor: pointer;
+      transition: border-color 0.2s;
     }
-    .empty-state p { font-family: var(--font-display); font-size: 1.5rem; font-weight: 300; }
-    .gallery-card .gallery-card-body { padding-bottom: 1.5rem; }
+    .file-upload-wrap:hover { border-color: var(--coast); }
+    .file-upload-wrap input[type=file] { display: none; }
+    .file-upload-wrap p { font-size: 0.85rem; color: var(--stone); margin-top: 0.5rem; }
+
+    /* Info box */
+    .info-box {
+      background: #eff6ff;
+      border-left: 3px solid var(--coast);
+      padding: 1rem 1.25rem;
+      font-size: 0.85rem;
+      color: var(--slate);
+      margin-bottom: 1.5rem;
+    }
+    .info-box strong { color: var(--ink); }
+
+    /* GitHub instructions */
+    .github-steps { counter-reset: steps; list-style: none; }
+    .github-steps li {
+      counter-increment: steps;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--sand);
+      font-size: 0.88rem;
+      color: var(--slate);
+    }
+    .github-steps li:last-child { border-bottom: none; }
+    .github-steps li::before {
+      content: counter(steps);
+      flex-shrink: 0;
+      width: 1.6rem; height: 1.6rem;
+      background: var(--coast);
+      color: white;
+      font-size: 0.72rem;
+      font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+    }
+    code {
+      background: var(--linen);
+      border: 1px solid var(--sand);
+      padding: 0.1rem 0.4rem;
+      font-size: 0.82rem;
+      font-family: monospace;
+      color: var(--coast-dark);
+    }
+
+    .empty-note { font-size: 0.88rem; color: var(--stone); font-style: italic; }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
-    <button class="nav-toggle" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
-    <ul class="nav-links">
-      <li><a href="index.html">Biography</a></li>
-      <li><a href="location.html">Location</a></li>
-      <li><a href="reviews.html">Reviews</a></li>
-      <li><a href="sold.html">Sold Works</a></li>
-      <li><a href="forsale.html">For Sale</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
+  <div class="hk-header">
+    <div>
+      <h1>Site management</h1>
+      <p>Jane Doe — artist website housekeeping</p>
+    </div>
+    <a href="index.html">← View website</a>
+  </div>
 
-  <main class="page">
-    <div class="page-header">
-      <p class="subtitle">Available now</p>
-      <h1>Works For Sale</h1>
+  <div class="hk-page">
+
+    <!-- =====================================================
+         IMPORTANT NOTICE
+         ===================================================== -->
+    <div class="info-box">
+      <strong>How this page works:</strong> This page shows you what to do — but because the site is hosted 
+      on GitHub Pages (a static host), changes are made by editing files and uploading them to GitHub. 
+      Each section below tells you exactly which file to change and what to do. It's simpler than it sounds!
     </div>
 
-    <div class="sale-notice">
-      <strong>How to purchase:</strong> Click "Enquire to buy" on any piece. You'll receive a response with bank transfer details — payment is by BACS (direct bank transfer), with no extra fees for either party. Works are dispatched carefully packaged once payment is received.
+    <!-- =====================================================
+         1. PICTURES FOR SALE
+         ===================================================== -->
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>Pictures for sale</h2>
+        <span class="badge badge-info" id="forsale-count">Loading…</span>
+      </div>
+      <div class="hk-section-body">
+
+        <ul class="pic-list" id="forsale-list">
+          <li class="empty-note" id="forsale-empty">No pictures for sale listed yet.</li>
+        </ul>
+
+        <!-- Add new picture -->
+        <div class="add-form">
+          <h3>Add a new picture for sale</h3>
+
+          <div class="info-box" style="margin-bottom:1.25rem;">
+            To add a picture: fill in the details below, then follow the upload steps in the 
+            "How to publish changes" section at the bottom of this page.
+          </div>
+
+          <div class="form-group">
+            <label>Photo file</label>
+            <div class="file-upload-wrap" onclick="document.getElementById('new-image').click()">
+              <input type="file" id="new-image" accept="image/*" onchange="previewImage(this)">
+              <div id="image-preview" style="margin-bottom:0.75rem;display:none;">
+                <img id="preview-img" style="max-height:160px;margin:0 auto;" alt="">
+              </div>
+              <p>Click to choose a photo — JPG or PNG, ideally 1200px wide or larger</p>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Title</label>
+              <input type="text" id="new-title" placeholder="e.g. Cape Cornwall, Evening">
+            </div>
+            <div class="form-group">
+              <label>Price (£)</label>
+              <input type="number" id="new-price" placeholder="e.g. 450" min="0">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Medium</label>
+              <input type="text" id="new-medium" placeholder="e.g. Oil on canvas">
+            </div>
+            <div class="form-group">
+              <label>Dimensions (optional)</label>
+              <input type="text" id="new-dimensions" placeholder="e.g. 40 × 30 cm">
+            </div>
+          </div>
+
+          <button class="btn btn-filled" onclick="generateAddInstructions()">
+            Generate upload instructions
+          </button>
+
+          <div id="add-instructions" style="display:none;margin-top:1.5rem;"></div>
+        </div>
+
+      </div>
     </div>
 
-    <div id="gallery" class="gallery-grid">
-      <div class="empty-state" id="empty">
-        <p>No works listed for sale at present.</p>
-        <div style="margin-top:1.5rem;">
-          <a href="contact.html" class="btn btn-coast">Enquire about commissions</a>
+    <!-- =====================================================
+         2. SOLD WORKS
+         ===================================================== -->
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>Sold works</h2>
+        <span class="badge badge-warn" id="sold-count">Loading…</span>
+      </div>
+      <div class="hk-section-body">
+        <p style="font-size:0.88rem;color:var(--slate);margin-bottom:1rem;">
+          To move a piece from "For sale" to "Sold", use the <strong>Mark as sold</strong> button below.
+          It will generate the exact JSON edit you need to make.
+        </p>
+        <ul class="pic-list" id="forsale-for-selling">
+          <li class="empty-note">No pictures for sale yet.</li>
+        </ul>
+        <hr style="border:none;border-top:1px solid var(--sand);margin:1.5rem 0;">
+        <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:400;margin-bottom:1rem;">Currently in sold archive</h3>
+        <ul class="pic-list" id="sold-list">
+          <li class="empty-note" id="sold-empty">No sold works listed yet.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- =====================================================
+         3. BIOGRAPHY & PROFILE
+         ===================================================== -->
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>Biography &amp; profile photo</h2>
+      </div>
+      <div class="hk-section-body">
+
+        <div class="info-box">
+          <strong>To edit the biography text:</strong> Open <code>index.html</code> in a text editor. 
+          Find the section marked <code>&lt;!-- EDIT YOUR BIOGRAPHY TEXT BELOW --&gt;</code> and 
+          change the text between the <code>&lt;p&gt;</code> tags. Save the file and upload to GitHub.
+        </div>
+
+        <div class="info-box">
+          <strong>To change the profile photo:</strong> Prepare a portrait image (JPG, ideally 600×800px or larger). 
+          Name it <code>profile.jpg</code> and upload it to the <code>images/profile/</code> folder on GitHub, 
+          replacing the existing file.
+        </div>
+
+        <div class="info-box">
+          <strong>To change the hero background image</strong> (the large image on the home page): 
+          Name your image <code>hero-bg.jpg</code> and upload it to <code>images/profile/</code>, 
+          replacing the existing file.
+        </div>
+
+        <div class="info-box" style="margin-bottom:0;">
+          <strong>To edit details</strong> (location, medium, commission status): In <code>index.html</code>, 
+          find the <code>bio-details</code> section and update the text inside the 
+          <code>&lt;p class="bio-detail-value"&gt;</code> tags.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- =====================================================
+         4. REVIEWS
+         ===================================================== -->
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>Reviews &amp; quotes</h2>
+      </div>
+      <div class="hk-section-body">
+        <div class="info-box">
+          <strong>To update review platform links:</strong> Open <code>reviews.html</code>. 
+          Find each <code>&lt;a href="..."&gt;</code> in the platform cards and replace the 
+          <code>href</code> with your actual Google, Facebook, or Etsy review page URL.
+        </div>
+        <div class="info-box" style="margin-bottom:0;">
+          <strong>To add or change featured quotes:</strong> In <code>reviews.html</code>, find the 
+          <code>&lt;!-- EDIT: Replace these with real quotes --&gt;</code> comment and 
+          edit the quote cards below it.
         </div>
       </div>
     </div>
-  </main>
 
-  <!-- Lightbox -->
-  <div id="lightbox" class="lightbox" aria-modal="true" role="dialog">
-    <span class="lightbox-close" aria-label="Close">&times;</span>
-    <img src="" alt="">
-  </div>
-
-  <footer>
-    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
-    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
-  </footer>
-
-  <div id="cookie-banner" role="region" aria-label="Cookie consent">
-    <p>This site uses cookies to display maps and remember your preferences. See our <a href="privacy.html">Privacy Policy</a>.</p>
-    <div class="cookie-actions">
-      <button id="cookie-decline" class="btn" style="border-color:var(--stone);color:var(--linen);font-size:0.72rem;padding:0.5rem 1rem;">Decline</button>
-      <button id="cookie-accept" class="btn btn-coast" style="font-size:0.72rem;padding:0.5rem 1rem;border-color:var(--coast);color:var(--coast);">Accept</button>
+    <!-- =====================================================
+         5. CONTACT DETAILS
+         ===================================================== -->
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>Contact details &amp; address</h2>
+      </div>
+      <div class="hk-section-body">
+        <div class="info-box" style="margin-bottom:0;">
+          Contact details (email, address) appear in the footer of <strong>every page</strong> and on 
+          <code>contact.html</code> and <code>privacy.html</code>. Search each file for 
+          <code>jane@example.com</code> and <code>TR18 XXX</code> and replace with real details. 
+          Also update the <code>mailto:</code> links in <code>buy.html</code> and <code>contact.html</code>.
+        </div>
+      </div>
     </div>
-  </div>
 
-  <script src="js/main.js"></script>
+    <!-- =====================================================
+         6. FORM SERVICE SETUP
+         ===================================================== -->
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>Setting up the contact form (one-time)</h2>
+        <span class="badge badge-warn">Action needed</span>
+      </div>
+      <div class="hk-section-body">
+        <p style="font-size:0.88rem;color:var(--slate);margin-bottom:1.25rem;">
+          Currently the contact and buy forms use a <code>mailto:</code> link as a temporary fallback — 
+          this opens the visitor's email app, which isn't ideal. To get proper form submissions delivered 
+          to your inbox, sign up for <strong>Formspree</strong> (free for up to 50 submissions/month):
+        </p>
+        <ol class="github-steps">
+          <li>Go to <strong>formspree.io</strong> and create a free account with your email address.</li>
+          <li>Create a new form — Formspree will give you a unique URL like <code>https://formspree.io/f/xyzabc12</code></li>
+          <li>In <code>buy.html</code> and <code>contact.html</code>, find the commented-out 
+              <code>OPTION A: Formspree</code> section and uncomment it, replacing <code>YOUR_ID</code> 
+              with your Formspree form ID.</li>
+          <li>Remove or comment out the <code>mailto:</code> fallback lines below it.</li>
+          <li>Upload the changed files to GitHub and test by submitting a test enquiry.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- =====================================================
+         7. HOW TO PUBLISH CHANGES TO GITHUB
+         ===================================================== -->
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>How to publish changes to GitHub</h2>
+      </div>
+      <div class="hk-section-body">
+        <p style="font-size:0.88rem;color:var(--slate);margin-bottom:1.25rem;">
+          All changes to the site are made by uploading or editing files on GitHub. Here's the simplest method 
+          using the GitHub website (no technical tools needed):
+        </p>
+        <ol class="github-steps">
+          <li>Go to <strong>github.com</strong> and log into your account.</li>
+          <li>Click on your repository (it will be named something like <code>yourdomain.github.io</code>).</li>
+          <li>
+            <strong>To upload a new image:</strong> Navigate to the correct folder 
+            (e.g. <code>images/gallery/</code>), click <strong>Add file → Upload files</strong>, 
+            drag your image in, scroll down and click <strong>Commit changes</strong>.
+          </li>
+          <li>
+            <strong>To edit a JSON file</strong> (adding/removing works): Click on the file 
+            (e.g. <code>data/forsale.json</code>), then click the pencil icon ✏️ to edit it. 
+            Make your changes, then click <strong>Commit changes</strong>.
+          </li>
+          <li>
+            <strong>To edit an HTML file</strong> (biography text, links, etc.): Click on the file, 
+            then click the pencil icon ✏️ to edit. Find the text to change, update it, 
+            click <strong>Commit changes</strong>.
+          </li>
+          <li>Wait 1–2 minutes. GitHub Pages rebuilds automatically. Refresh your website to see the change.</li>
+        </ol>
+      </div>
+    </div>
+
+  </div><!-- end hk-page -->
+
   <script>
-    document.getElementById('yr').textContent = new Date().getFullYear();
+    // Load and display current for-sale and sold items
+    let forsaleData = [];
+    let soldData = [];
 
-    fetch('data/forsale.json')
-      .then(r => r.json())
-      .then(items => {
-        const grid = document.getElementById('gallery');
-        const empty = document.getElementById('empty');
-        if (!items.length) return;
-        empty.remove();
-        items.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'gallery-card';
-          card.innerHTML = `
-            <img
-              src="images/gallery/${item.image}"
-              alt="${item.title}"
-              data-lightbox="images/gallery/${item.image}"
-              data-title="${item.title}"
-              loading="lazy">
-            <div class="gallery-card-body">
-              <h3 class="gallery-card-title">${item.title}</h3>
-              <p class="gallery-card-meta">${item.medium || ''} ${item.dimensions ? '· ' + item.dimensions : ''}</p>
-              <p class="gallery-card-price">£${Number(item.price).toLocaleString('en-GB')}</p>
-              <a href="buy.html?id=${item.id}&title=${encodeURIComponent(item.title)}&price=${item.price}" class="btn btn-coast" style="font-size:0.75rem;padding:0.55rem 1.1rem;">Enquire to buy</a>
-            </div>`;
-          grid.appendChild(card);
-        });
-        // Lightbox
-        document.querySelectorAll('[data-lightbox]').forEach(el => {
-          el.style.cursor = 'zoom-in';
-          el.addEventListener('click', () => {
-            const lb = document.getElementById('lightbox');
-            lb.querySelector('img').src = el.dataset.lightbox;
-            lb.classList.add('open');
-            document.body.style.overflow = 'hidden';
-          });
-        });
-      })
-      .catch(() => {});
+    Promise.all([
+      fetch('data/forsale.json').then(r => r.json()).catch(() => []),
+      fetch('data/sold.json').then(r => r.json()).catch(() => [])
+    ]).then(([fs, sold]) => {
+      forsaleData = fs;
+      soldData = sold;
+      renderForsale();
+      renderSold();
+    });
+
+    function renderForsale() {
+      const list = document.getElementById('forsale-list');
+      const sellList = document.getElementById('forsale-for-selling');
+      document.getElementById('forsale-count').textContent = forsaleData.length + ' items';
+
+      if (!forsaleData.length) return;
+
+      list.innerHTML = '';
+      sellList.innerHTML = '';
+
+      forsaleData.forEach((item, i) => {
+        // Main list
+        const li = document.createElement('li');
+        li.className = 'pic-item';
+        li.innerHTML = `
+          <img class="pic-thumb" src="images/gallery/${item.image}" alt="${item.title}" onerror="this.style.background='var(--sand)'">
+          <div class="pic-info">
+            <p class="pic-title">${item.title}</p>
+            <p class="pic-meta">${item.medium || ''} ${item.dimensions ? '· ' + item.dimensions : ''} · £${Number(item.price).toLocaleString('en-GB')}</p>
+          </div>
+          <div class="pic-actions">
+            <button class="btn btn-sm btn-danger" onclick="showRemoveInstructions(${i}, 'forsale')">Remove</button>
+          </div>`;
+        list.appendChild(li);
+
+        // Sell list (for marking as sold)
+        const li2 = document.createElement('li');
+        li2.className = 'pic-item';
+        li2.innerHTML = `
+          <img class="pic-thumb" src="images/gallery/${item.image}" alt="${item.title}" onerror="this.style.background='var(--sand)'">
+          <div class="pic-info">
+            <p class="pic-title">${item.title}</p>
+            <p class="pic-meta">£${Number(item.price).toLocaleString('en-GB')}</p>
+          </div>
+          <div class="pic-actions">
+            <button class="btn btn-sm btn-sold" onclick="showMarkSoldInstructions(${i})">Mark as sold</button>
+          </div>`;
+        sellList.appendChild(li2);
+      });
+    }
+
+    function renderSold() {
+      const list = document.getElementById('sold-list');
+      document.getElementById('sold-count').textContent = soldData.length + ' items';
+      if (!soldData.length) return;
+      list.innerHTML = '';
+      soldData.forEach((item, i) => {
+        const li = document.createElement('li');
+        li.className = 'pic-item';
+        li.innerHTML = `
+          <img class="pic-thumb" src="images/sold/${item.image}" alt="${item.title}" onerror="this.style.background='var(--sand)'">
+          <div class="pic-info">
+            <p class="pic-title">${item.title}</p>
+            <p class="pic-meta">${item.medium || ''} ${item.year ? '· ' + item.year : ''}</p>
+          </div>
+          <div class="pic-actions">
+            <button class="btn btn-sm btn-danger" onclick="showRemoveInstructions(${i}, 'sold')">Remove</button>
+          </div>`;
+        list.appendChild(li);
+      });
+    }
+
+    // --- Image preview ---
+    function previewImage(input) {
+      if (!input.files || !input.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('preview-img').src = e.target.result;
+        document.getElementById('image-preview').style.display = 'block';
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    // --- Generate add instructions ---
+    function generateAddInstructions() {
+      const title      = document.getElementById('new-title').value.trim();
+      const price      = document.getElementById('new-price').value.trim();
+      const medium     = document.getElementById('new-medium').value.trim();
+      const dimensions = document.getElementById('new-dimensions').value.trim();
+      const file       = document.getElementById('new-image').files[0];
+
+      if (!title || !price) {
+        alert('Please enter at least a title and price.');
+        return;
+      }
+
+      const filename = file ? file.name : 'your-image-file.jpg';
+      const newId = Date.now();
+      const newEntry = { id: newId, image: filename, title, price: Number(price), medium, dimensions };
+      const currentJson = JSON.stringify(forsaleData, null, 2);
+      forsaleData.push(newEntry);
+      const newJson = JSON.stringify(forsaleData, null, 2);
+
+      document.getElementById('add-instructions').style.display = 'block';
+      document.getElementById('add-instructions').innerHTML = `
+        <div class="info-box" style="background:#f0fdf4;border-color:#16a34a;">
+          <strong>Steps to add "${title}" to the site:</strong><br><br>
+          <strong>Step 1</strong> — Upload the image file:<br>
+          Go to your GitHub repo → <code>images/gallery/</code> → Add file → Upload files<br>
+          Upload: <code>${filename}</code><br><br>
+          <strong>Step 2</strong> — Update forsale.json:<br>
+          Go to <code>data/forsale.json</code> → click pencil ✏️ → replace ALL content with:<br>
+          <textarea style="width:100%;height:160px;font-family:monospace;font-size:0.78rem;border:1px solid var(--sand);padding:0.75rem;margin-top:0.5rem;" readonly>${newJson}</textarea>
+          <br>Click <strong>Commit changes</strong>. Wait 1–2 minutes, then check your For Sale page.
+        </div>`;
+    }
+
+    // --- Remove instructions ---
+    function showRemoveInstructions(index, list) {
+      const data = list === 'forsale' ? forsaleData : soldData;
+      const item = data[index];
+      const filename = list === 'forsale' ? 'data/forsale.json' : 'data/sold.json';
+      const newData = data.filter((_, i) => i !== index);
+      const newJson = JSON.stringify(newData, null, 2);
+      alert(`To remove "${item.title}":\n\nGo to ${filename} on GitHub → click pencil ✏️ → replace all content with the JSON shown below.\n\nThen copy this into the file:\n\n${newJson}`);
+    }
+
+    // --- Mark as sold ---
+    function showMarkSoldInstructions(index) {
+      const item = forsaleData[index];
+      const year = new Date().getFullYear();
+      const soldEntry = { id: item.id, image: item.image, title: item.title, medium: item.medium, year };
+      const newForsale = forsaleData.filter((_, i) => i !== index);
+      const newSold = [...soldData, soldEntry];
+
+      const box = document.createElement('div');
+      box.className = 'info-box';
+      box.style.background = '#fffbeb';
+      box.style.borderColor = '#f59e0b';
+      box.innerHTML = `
+        <strong>To mark "${item.title}" as sold:</strong><br><br>
+        <strong>Step 1</strong> — Move the image file on GitHub:<br>
+        Upload <code>${item.image}</code> to <code>images/sold/</code> (you can download it from <code>images/gallery/</code> first).<br><br>
+        <strong>Step 2</strong> — Update <code>data/forsale.json</code> (remove it from sale):<br>
+        <textarea style="width:100%;height:100px;font-family:monospace;font-size:0.75rem;border:1px solid var(--sand);padding:0.5rem;" readonly>${JSON.stringify(newForsale, null, 2)}</textarea><br><br>
+        <strong>Step 3</strong> — Update <code>data/sold.json</code> (add it to sold archive):<br>
+        <textarea style="width:100%;height:100px;font-family:monospace;font-size:0.75rem;border:1px solid var(--sand);padding:0.5rem;" readonly>${JSON.stringify(newSold, null, 2)}</textarea>
+      `;
+      document.querySelector('.hk-section:nth-child(3) .hk-section-body').appendChild(box);
+      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   </script>
 </body>
 </html>

@@ -3,93 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Location — Jane Doe, Cornwall</title>
+  <title>Privacy Policy — Jane Doe, Cornwall</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .location-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-      margin-bottom: 4rem;
-    }
-    .map-wrap {
-      background: var(--sand);
-      overflow: hidden;
-      box-shadow: var(--shadow-soft);
-    }
-    .map-wrap iframe {
-      display: block;
-      width: 100%;
-      height: 440px;
-      border: none;
-    }
-    .map-notice {
-      padding: 0.75rem 1rem;
-      font-size: 0.78rem;
-      color: var(--stone);
-      border-top: 1px solid var(--sand);
-      background: var(--white);
-    }
-    .location-info h2 {
+    .policy-body { max-width: 680px; margin-bottom: 5rem; }
+    .policy-body h2 {
       font-family: var(--font-display);
-      font-size: 2rem;
+      font-size: 1.6rem;
       font-weight: 300;
-      margin-bottom: 1.5rem;
+      margin: 2.5rem 0 0.75rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--sand);
     }
-    .location-block {
-      margin-bottom: 2rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--sand);
+    .policy-body h2:first-of-type { border-top: none; margin-top: 0; }
+    .policy-body p, .policy-body li {
+      color: var(--slate);
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
     }
-    .location-block:last-child { border-bottom: none; }
-    .location-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+    .policy-body ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .policy-body strong { color: var(--ink); font-weight: 500; }
+    .policy-body a { color: var(--coast); }
+    .policy-body a:hover { text-decoration: underline; }
+    .policy-meta {
+      font-size: 0.8rem;
       color: var(--stone);
-      margin-bottom: 0.4rem;
-    }
-    .location-value {
-      font-family: var(--font-display);
-      font-size: 1.2rem;
-      color: var(--ink);
-      line-height: 1.5;
-    }
-    .location-note {
-      font-size: 0.9rem;
-      color: var(--slate);
-      margin-top: 0.4rem;
-    }
-    .directions-list {
-      list-style: none;
-      counter-reset: dirs;
-    }
-    .directions-list li {
-      counter-increment: dirs;
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      padding: 0.6rem 0;
-      font-size: 0.9rem;
-      color: var(--slate);
-    }
-    .directions-list li::before {
-      content: counter(dirs);
-      flex-shrink: 0;
-      width: 1.5rem;
-      height: 1.5rem;
-      background: var(--coast);
-      color: var(--white);
-      font-size: 0.7rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 0.1rem;
-    }
-    @media (max-width: 768px) {
-      .location-grid { grid-template-columns: 1fr; gap: 2rem; }
+      margin-bottom: 2.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--white);
+      border-left: 3px solid var(--sand);
     }
   </style>
 </head>
@@ -112,83 +57,125 @@
 
   <main class="page">
     <div class="page-header">
-      <p class="subtitle">Find us</p>
-      <h1>Location &amp; Studio</h1>
+      <p class="subtitle">Legal</p>
+      <h1>Privacy Policy &amp; Cookie Notice</h1>
     </div>
 
-    <div class="location-grid">
+    <div class="policy-body">
+      <p class="policy-meta">
+        Last updated: <span id="policy-date"></span> &nbsp;|&nbsp;
+        Controller: Jane Doe, [Studio Address], Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp;
+        Contact: <a href="mailto:jane@example.com">jane@example.com</a>
+      </p>
 
-      <!-- Map -->
-      <div>
-        <div class="map-wrap">
-          <!--
-            HOW TO UPDATE THIS MAP:
-            1. Go to maps.google.com
-            2. Search for your address
-            3. Click Share → Embed a map
-            4. Copy the iframe code and paste it here, replacing the one below
-          -->
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2648.0!2d-5.537!3d50.118!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDA3JzA0LjgiTiA1wrAzMicxMy4yIlc!5e0!3m2!1sen!2suk!4v1234567890"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            title="Map showing studio location">
-          </iframe>
-          <p class="map-notice">Map provided by Google Maps. By viewing this map you accept Google's cookie policy.</p>
-        </div>
-        <div class="mt-1">
-          <a href="https://maps.google.com/?q=Penzance,Cornwall" target="_blank" rel="noopener" class="btn mt-1" style="font-size:0.75rem;padding:0.6rem 1.25rem;">
-            Open in Google Maps ↗
-          </a>
-        </div>
-      </div>
+      <h2>1. Who we are</h2>
+      <p>
+        This website is operated by <strong>Jane Doe</strong>, a sole trader and artist based in Cornwall, UK. 
+        Jane Doe is the data controller for any personal data collected through this site.
+      </p>
+      <p>
+        <!-- EDIT: Add ICO registration number once registered -->
+        ICO Registration number: [ADD ONCE REGISTERED — check ico.org.uk/registration]
+      </p>
 
-      <!-- Info -->
-      <div class="location-info">
-        <h2>The studio</h2>
+      <h2>2. What data we collect and why</h2>
+      <p>We collect personal data only when you actively provide it to us:</p>
+      <ul>
+        <li>
+          <strong>Purchase and sales enquiries</strong> — your name, email address, postal address, and any notes 
+          you provide. We use this to process your enquiry, arrange payment, and despatch your artwork. 
+          Legal basis: contract (Article 6(1)(b) UK GDPR).
+        </li>
+        <li>
+          <strong>General contact messages</strong> — your name and email address. We use this solely to respond 
+          to your message. Legal basis: legitimate interests (Article 6(1)(f) UK GDPR).
+        </li>
+        <li>
+          <strong>Cookie consent preference</strong> — stored locally in your browser (localStorage) to remember 
+          your choice. This is not sent to any server.
+        </li>
+      </ul>
 
-        <div class="location-block">
-          <p class="location-label">Address</p>
-          <!-- EDIT: Replace with real address -->
-          <p class="location-value">
-            Studio Name<br>
-            Street Address<br>
-            Penzance<br>
-            Cornwall, TR18 XXX
-          </p>
-        </div>
+      <h2>3. How long we keep your data</h2>
+      <ul>
+        <li>Sales records (name, address, amount paid): 6 years — required for UK tax purposes (HMRC).</li>
+        <li>General enquiries not resulting in a sale: deleted within 12 months of last contact.</li>
+        <li>Cookie preference: stored in your browser until you clear it (not sent to us).</li>
+      </ul>
 
-        <div class="location-block">
-          <p class="location-label">Studio visits</p>
-          <p class="location-value">By appointment only</p>
-          <p class="location-note">
-            Please <a href="contact.html" style="color:var(--coast);">get in touch</a> to arrange a visit. 
-            We are happy to welcome collectors and those with a serious interest in the work.
-          </p>
-        </div>
+      <h2>4. Who we share data with</h2>
+      <p>
+        We do not sell or share your personal data with third parties for marketing purposes. 
+        Your data may be processed by the following third-party services:
+      </p>
+      <ul>
+        <li>
+          <strong>Google Maps</strong> (location page) — if you view the embedded map, Google may set cookies 
+          and collect data about your use. See 
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.
+        </li>
+        <li>
+          <strong>Form handling</strong> — if we use a third-party form service (such as Formspree), 
+          your submission is processed through their servers. We will update this policy when a 
+          form service is in place.
+        </li>
+      </ul>
+      <p>
+        We do not use Google Analytics, Facebook Pixel, or any advertising trackers on this website.
+      </p>
 
-        <div class="location-block">
-          <p class="location-label">Getting here</p>
-          <ul class="directions-list">
-            <li>By train: Penzance station is the end of the Great Western mainline from London Paddington.</li>
-            <li>By car: Leave the A30 at the Penzance junction and follow signs to the town centre.</li>
-            <li>Parking: Public car parks available on the seafront and town centre.</li>
-          </ul>
-        </div>
+      <h2>5. Cookies</h2>
+      <p>This site uses the following cookies and browser storage:</p>
+      <ul>
+        <li>
+          <strong>cookie-consent</strong> (localStorage, this site only) — stores whether you accepted or 
+          declined cookies. Never sent to a server. Expires when you clear your browser storage.
+        </li>
+        <li>
+          <strong>Google Maps cookies</strong> — only set if you view the embedded map on the Location page, 
+          and only if you accept cookies. These are third-party cookies set by Google. You can decline 
+          cookies using the banner at the bottom of this page to prevent the map loading.
+        </li>
+      </ul>
+      <p>
+        We do not use any advertising, tracking, or analytics cookies.
+      </p>
 
-        <a href="contact.html" class="btn btn-coast">Arrange a visit</a>
-      </div>
+      <h2>6. Your rights under UK GDPR</h2>
+      <p>You have the right to:</p>
+      <ul>
+        <li>Access the personal data we hold about you</li>
+        <li>Request correction of inaccurate data</li>
+        <li>Request erasure of your data (where no legal obligation requires us to retain it)</li>
+        <li>Object to our processing of your data</li>
+        <li>Lodge a complaint with the ICO: <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener">ico.org.uk/make-a-complaint</a></li>
+      </ul>
+      <p>To exercise any of these rights, contact us at <a href="mailto:jane@example.com">jane@example.com</a>.</p>
 
+      <h2>7. Data security</h2>
+      <p>
+        This site is served over HTTPS (encrypted connection). Enquiry forms send data by email to our 
+        private email address. We do not store form data on any public server. Emails are held on 
+        a password-protected account.
+      </p>
+
+      <h2>8. Changes to this policy</h2>
+      <p>
+        We may update this policy when our services change. The date at the top of this page shows 
+        when it was last revised.
+      </p>
+
+      <h2>9. Contact</h2>
+      <p>
+        Jane Doe<br>
+        [Studio Address], Penzance, Cornwall, TR18 XXX<br>
+        <a href="mailto:jane@example.com">jane@example.com</a>
+      </p>
     </div>
   </main>
 
   <footer>
-    <p>
-      &copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp;
-      <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
-      <a href="contact.html">Contact</a>
-    </p>
+    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
     <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
   </footer>
 
@@ -201,6 +188,11 @@
   </div>
 
   <script src="js/main.js"></script>
-  <script>document.getElementById('yr').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    // Show policy date
+    document.getElementById('policy-date').textContent =
+      new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+  </script>
 </body>
 </html>
