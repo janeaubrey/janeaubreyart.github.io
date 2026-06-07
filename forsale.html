@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Works For Sale — Jane Doe, Cornwall</title>
+  <title>Works For Sale — Jane Aubrey Art, Cornwall</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .sale-notice {
@@ -15,23 +15,19 @@
       color: var(--slate);
       box-shadow: var(--shadow-card);
     }
-    .sale-notice strong {
-      color: var(--ink);
-      font-weight: 500;
-    }
+    .sale-notice strong { color: var(--ink); font-weight: 500; }
     .empty-state {
       text-align: center;
       padding: 5rem 2rem;
       color: var(--stone);
     }
     .empty-state p { font-family: var(--font-display); font-size: 1.5rem; font-weight: 300; }
-    .gallery-card .gallery-card-body { padding-bottom: 1.5rem; }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <a href="index.html" class="nav-brand">Jane Aubrey <span>Art</span></a>
     <button class="nav-toggle" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -52,7 +48,10 @@
     </div>
 
     <div class="sale-notice">
-      <strong>How to purchase:</strong> Click "Enquire to buy" on any piece. You'll receive a response with bank transfer details — payment is by BACS (direct bank transfer), with no extra fees for either party. Works are dispatched carefully packaged once payment is received.
+      <strong>How to purchase:</strong> Click "Enquire to buy" on any piece. You'll receive
+      a response with bank transfer details — payment is by BACS (direct bank transfer),
+      with no extra fees for either party. Works are dispatched carefully packaged once
+      payment is received.
     </div>
 
     <div id="gallery" class="gallery-grid">
@@ -65,15 +64,18 @@
     </div>
   </main>
 
-  <!-- Lightbox -->
   <div id="lightbox" class="lightbox" aria-modal="true" role="dialog">
     <span class="lightbox-close" aria-label="Close">&times;</span>
     <img src="" alt="">
   </div>
 
   <footer>
-    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
-    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+    <p>
+      &copy; <span id="yr"></span> Jane Aubrey Art. All rights reserved. &nbsp;|&nbsp;
+      <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
+      <a href="contact.html">Contact</a>
+    </p>
+    <p style="margin-top:0.5rem;">Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW &nbsp;|&nbsp; jane.mynne@live.co.uk</p>
   </footer>
 
   <div id="cookie-banner" role="region" aria-label="Cookie consent">
@@ -87,7 +89,6 @@
   <script src="js/main.js"></script>
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
-
     fetch('data/forsale.json')
       .then(r => r.json())
       .then(items => {
@@ -99,21 +100,17 @@
           const card = document.createElement('div');
           card.className = 'gallery-card';
           card.innerHTML = `
-            <img
-              src="images/gallery/${item.image}"
-              alt="${item.title}"
-              data-lightbox="images/gallery/${item.image}"
-              data-title="${item.title}"
-              loading="lazy">
+            <img src="images/gallery/${item.image}" alt="${item.title}"
+              data-lightbox="images/gallery/${item.image}" data-title="${item.title}" loading="lazy">
             <div class="gallery-card-body">
               <h3 class="gallery-card-title">${item.title}</h3>
               <p class="gallery-card-meta">${item.medium || ''} ${item.dimensions ? '· ' + item.dimensions : ''}</p>
               <p class="gallery-card-price">£${Number(item.price).toLocaleString('en-GB')}</p>
-              <a href="buy.html?id=${item.id}&title=${encodeURIComponent(item.title)}&price=${item.price}" class="btn btn-coast" style="font-size:0.75rem;padding:0.55rem 1.1rem;">Enquire to buy</a>
+              <a href="buy.html?id=${item.id}&title=${encodeURIComponent(item.title)}&price=${item.price}"
+                class="btn btn-coast" style="font-size:0.75rem;padding:0.55rem 1.1rem;">Enquire to buy</a>
             </div>`;
           grid.appendChild(card);
         });
-        // Lightbox
         document.querySelectorAll('[data-lightbox]').forEach(el => {
           el.style.cursor = 'zoom-in';
           el.addEventListener('click', () => {
@@ -123,8 +120,7 @@
             document.body.style.overflow = 'hidden';
           });
         });
-      })
-      .catch(() => {});
+      }).catch(() => {});
   </script>
 </body>
 </html>

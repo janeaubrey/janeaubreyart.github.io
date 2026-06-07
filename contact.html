@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact — Jane Doe, Cornwall</title>
+  <title>Contact — Jane Aubrey Art, Cornwall</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .contact-layout {
@@ -60,7 +60,7 @@
 <body>
 
   <nav>
-    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <a href="index.html" class="nav-brand">Jane Aubrey <span>Art</span></a>
     <button class="nav-toggle" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -87,17 +87,16 @@
 
         <div class="contact-block">
           <p class="contact-label">Email</p>
-          <!-- EDIT: Replace with real email -->
-          <p class="contact-value"><a href="mailto:jane@example.com">jane@example.com</a></p>
+          <p class="contact-value"><a href="mailto:jane.mynne@live.co.uk">jane.mynne@live.co.uk</a></p>
         </div>
 
         <div class="contact-block">
           <p class="contact-label">Studio address</p>
           <p class="contact-value">
-            Studio Name<br>
-            Street Address<br>
-            Penzance, Cornwall<br>
-            TR18 XXX
+            Carn Garth<br>
+            Mawla<br>
+            Redruth, Cornwall<br>
+            TR16 5DW
           </p>
           <p style="font-size:0.85rem;color:var(--slate);margin-top:0.5rem;">Studio visits by appointment only.</p>
         </div>
@@ -111,12 +110,12 @@
           <p class="contact-label">Commissions</p>
           <p class="contact-value">Currently open</p>
           <p style="font-size:0.85rem;color:var(--slate);margin-top:0.5rem;">
-            I welcome enquiries about commissioned work — please describe your idea in the form and I'll get back to you.
+            I welcome enquiries about commissioned work — please describe your idea
+            in the form and I'll get back to you.
           </p>
         </div>
       </div>
 
-      <!-- Contact form -->
       <div>
         <form id="contact-form" novalidate>
           <div class="form-group">
@@ -144,7 +143,9 @@
           <div class="form-group" style="display:flex;gap:0.75rem;align-items:flex-start;">
             <input type="checkbox" id="c-gdpr" name="gdpr" required style="width:auto;margin-top:0.2rem;flex-shrink:0;">
             <label for="c-gdpr" style="text-transform:none;font-size:0.85rem;letter-spacing:0;color:var(--slate);">
-              I agree that Jane Doe may use my details to respond to this enquiry. <a href="privacy.html" style="color:var(--coast);">Privacy Policy</a>. <span style="color:var(--coast)">*</span>
+              I agree that Jane Aubrey may use my details to respond to this enquiry.
+              <a href="privacy.html" style="color:var(--coast);">Privacy Policy</a>.
+              <span style="color:var(--coast)">*</span>
             </label>
           </div>
           <div id="c-error" style="display:none;color:#b91c1c;font-size:0.85rem;margin-bottom:1rem;"></div>
@@ -161,8 +162,12 @@
   </main>
 
   <footer>
-    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
-    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+    <p>
+      &copy; <span id="yr"></span> Jane Aubrey Art. All rights reserved. &nbsp;|&nbsp;
+      <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
+      <a href="contact.html">Contact</a>
+    </p>
+    <p style="margin-top:0.5rem;">Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW &nbsp;|&nbsp; jane.mynne@live.co.uk</p>
   </footer>
 
   <div id="cookie-banner" role="region" aria-label="Cookie consent">
@@ -190,10 +195,9 @@
         errBox.style.display = 'block';
         return;
       }
-      // mailto fallback — replace with Formspree or similar (see buy.html notes)
       const subject = encodeURIComponent('Website contact: ' + document.getElementById('c-subject').value);
       const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-      window.location.href = `mailto:jane@example.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:jane.mynne@live.co.uk?subject=${subject}&body=${body}`;
       form.style.display = 'none';
       document.getElementById('success-msg').style.display = 'block';
     });

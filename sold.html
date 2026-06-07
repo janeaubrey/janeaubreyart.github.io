@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sold Works — Jane Doe, Cornwall</title>
+  <title>Sold Works — Jane Aubrey Art, Cornwall</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .sold-badge {
@@ -16,7 +16,6 @@
       padding: 0.2rem 0.6rem;
       margin-bottom: 0.5rem;
     }
-    .gallery-card-meta { margin-top: 0.2rem; }
     .empty-state {
       text-align: center;
       padding: 5rem 2rem;
@@ -28,7 +27,7 @@
 <body>
 
   <nav>
-    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <a href="index.html" class="nav-brand">Jane Aubrey <span>Art</span></a>
     <button class="nav-toggle" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -55,15 +54,18 @@
     </div>
   </main>
 
-  <!-- Lightbox -->
   <div id="lightbox" class="lightbox" aria-modal="true" role="dialog">
     <span class="lightbox-close" aria-label="Close">&times;</span>
     <img src="" alt="">
   </div>
 
   <footer>
-    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
-    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+    <p>
+      &copy; <span id="yr"></span> Jane Aubrey Art. All rights reserved. &nbsp;|&nbsp;
+      <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
+      <a href="contact.html">Contact</a>
+    </p>
+    <p style="margin-top:0.5rem;">Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW &nbsp;|&nbsp; jane.mynne@live.co.uk</p>
   </footer>
 
   <div id="cookie-banner" role="region" aria-label="Cookie consent">
@@ -77,8 +79,6 @@
   <script src="js/main.js"></script>
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
-
-    // Load sold works from sold.json
     fetch('data/sold.json')
       .then(r => r.json())
       .then(items => {
@@ -90,12 +90,8 @@
           const card = document.createElement('div');
           card.className = 'gallery-card';
           card.innerHTML = `
-            <img
-              src="images/sold/${item.image}"
-              alt="${item.title}"
-              data-lightbox="images/sold/${item.image}"
-              data-title="${item.title}"
-              loading="lazy">
+            <img src="images/sold/${item.image}" alt="${item.title}"
+              data-lightbox="images/sold/${item.image}" data-title="${item.title}" loading="lazy">
             <div class="gallery-card-body">
               <span class="sold-badge">Sold</span>
               <h3 class="gallery-card-title">${item.title}</h3>
@@ -103,7 +99,6 @@
             </div>`;
           grid.appendChild(card);
         });
-        // Re-init lightbox after dynamic content added
         document.querySelectorAll('[data-lightbox]').forEach(el => {
           el.style.cursor = 'zoom-in';
           el.addEventListener('click', () => {
@@ -113,8 +108,7 @@
             document.body.style.overflow = 'hidden';
           });
         });
-      })
-      .catch(() => {}); // silently fail if no data file yet
+      }).catch(() => {});
   </script>
 </body>
 </html>

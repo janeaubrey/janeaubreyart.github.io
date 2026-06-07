@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reviews — Jane Doe, Cornwall</title>
+  <title>Reviews — Jane Aubrey Art, Cornwall</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .review-platforms {
@@ -21,10 +21,7 @@
       gap: 1rem;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    .platform-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-soft);
-    }
+    .platform-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-soft); }
     .platform-icon {
       width: 48px;
       height: 48px;
@@ -34,28 +31,10 @@
       justify-content: center;
       font-size: 1.4rem;
     }
-    .platform-name {
-      font-family: var(--font-display);
-      font-size: 1.4rem;
-      font-weight: 400;
-    }
-    .platform-desc {
-      font-size: 0.88rem;
-      color: var(--slate);
-      flex: 1;
-    }
-    .platform-rating {
-      font-size: 1rem;
-      color: #c9963a;
-      letter-spacing: 0.05em;
-    }
-    .platform-rating span {
-      color: var(--stone);
-      font-size: 0.8rem;
-      margin-left: 0.4rem;
-    }
-
-    /* Featured quotes */
+    .platform-name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 400; }
+    .platform-desc { font-size: 0.88rem; color: var(--slate); flex: 1; }
+    .platform-rating { font-size: 1rem; color: #c9963a; letter-spacing: 0.05em; }
+    .platform-rating span { color: var(--stone); font-size: 0.8rem; margin-left: 0.4rem; }
     .quotes-section { margin-bottom: 5rem; }
     .quotes-section h2 {
       font-family: var(--font-display);
@@ -83,18 +62,8 @@
       color: var(--ink);
       margin-bottom: 1rem;
     }
-    .quote-author {
-      font-size: 0.78rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--stone);
-    }
-    .quote-source {
-      font-size: 0.75rem;
-      color: var(--coast);
-      margin-top: 0.2rem;
-    }
-
+    .quote-author { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); }
+    .quote-source { font-size: 0.75rem; color: var(--coast); margin-top: 0.2rem; }
     .review-cta {
       text-align: center;
       padding: 3rem;
@@ -102,29 +71,15 @@
       box-shadow: var(--shadow-card);
       margin-bottom: 4rem;
     }
-    .review-cta h3 {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      font-weight: 300;
-      margin-bottom: 0.75rem;
-    }
-    .review-cta p {
-      color: var(--slate);
-      margin-bottom: 1.5rem;
-      font-size: 0.95rem;
-    }
-    .review-cta .cta-links {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    .review-cta h3 { font-family: var(--font-display); font-size: 1.8rem; font-weight: 300; margin-bottom: 0.75rem; }
+    .review-cta p { color: var(--slate); margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .review-cta .cta-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <a href="index.html" class="nav-brand">Jane Aubrey <span>Art</span></a>
     <button class="nav-toggle" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -144,14 +99,10 @@
       <h1>Reviews &amp; Feedback</h1>
     </div>
 
-    <!-- Review platforms -->
     <div class="review-platforms">
-
-      <!-- EDIT: Replace href values with your actual review page URLs -->
-
-      <a href="https://www.google.com/search?q=Jane+Doe+artist+Cornwall+reviews" target="_blank" rel="noopener" class="platform-card">
+      <a href="#" class="platform-card">
         <div class="platform-icon" style="background:#e8f0fe;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
             <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
             <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
@@ -159,13 +110,13 @@
           </svg>
         </div>
         <p class="platform-name">Google</p>
-        <p class="platform-desc">Read and leave reviews on Google — the most widely seen platform for local businesses and artists.</p>
+        <p class="platform-desc">Read and leave reviews on Google — the most widely seen platform for local artists and businesses.</p>
         <p class="platform-rating">★★★★★ <span>View on Google →</span></p>
       </a>
 
-      <a href="https://www.facebook.com/" target="_blank" rel="noopener" class="platform-card">
+      <a href="#" class="platform-card">
         <div class="platform-icon" style="background:#e7f0fe;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#1877F2">
             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
           </svg>
         </div>
@@ -174,9 +125,9 @@
         <p class="platform-rating">★★★★★ <span>View on Facebook →</span></p>
       </a>
 
-      <a href="https://www.etsy.com/" target="_blank" rel="noopener" class="platform-card">
+      <a href="#" class="platform-card">
         <div class="platform-icon" style="background:#fdf0e8;">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="#F56400" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="#F56400">
             <path d="M9.51 1.4c.39-.25.9-.37 1.55-.37 1.23 0 2.33.42 3.29 1.27l.59.54.42-.62C14.71 1.44 14 .76 13.01.37 12.04 0 10.99 0 9.87 0c-1.1 0-2.09.3-2.97.9-.87.6-1.52 1.43-1.95 2.47C4.5 4.43 4.28 5.6 4.28 6.92c0 1.38.28 2.67.84 3.89.56 1.22 1.34 2.2 2.34 2.95.99.74 2.13 1.12 3.41 1.12.72 0 1.47-.15 2.23-.44.76-.3 1.4-.7 1.9-1.22l.43-.45-.52-.41c-.56.55-1.16.97-1.82 1.24-.65.28-1.31.41-1.98.41-1.01 0-1.93-.31-2.74-.93-.81-.62-1.44-1.47-1.89-2.56-.45-1.09-.67-2.27-.67-3.57 0-1.24.21-2.33.63-3.28.41-.97.97-1.73 1.67-2.29z"/>
           </svg>
         </div>
@@ -184,51 +135,47 @@
         <p class="platform-desc">Browse verified purchase reviews from collectors who've bought original work.</p>
         <p class="platform-rating">★★★★★ <span>View on Etsy →</span></p>
       </a>
-
     </div>
 
-    <!-- Featured quotes -->
     <div class="quotes-section">
       <h2>Selected reviews</h2>
       <div class="quotes-grid">
-
-        <!-- EDIT: Replace these with real quotes from your reviews -->
         <div class="quote-card">
-          <p class="quote-text">"Absolutely beautiful piece. The light in this painting is extraordinary — it genuinely captures something of the Cornish coast."</p>
+          <p class="quote-text">"Absolutely beautiful piece. The light in this watercolour is extraordinary — it genuinely captures something of the Cornish landscape."</p>
           <p class="quote-author">Sarah T.</p>
           <p class="quote-source">Via Google</p>
         </div>
-
         <div class="quote-card">
-          <p class="quote-text">"Wonderful to deal with, careful packaging, and the photograph exceeded all my expectations. Will be buying again."</p>
+          <p class="quote-text">"Wonderful to deal with, careful packaging, and the painting exceeded all my expectations. Will be buying again."</p>
           <p class="quote-author">Mark H.</p>
           <p class="quote-source">Via Etsy</p>
         </div>
-
         <div class="quote-card">
           <p class="quote-text">"A genuinely talented artist with a real eye for atmosphere. I visited the studio and came away with two pieces."</p>
           <p class="quote-author">Catherine W.</p>
           <p class="quote-source">Via Google</p>
         </div>
-
       </div>
     </div>
 
-    <!-- Leave a review CTA -->
     <div class="review-cta">
       <h3>Enjoyed our work?</h3>
       <p>If you've purchased a piece or visited the studio, we'd be grateful for a review. It makes an enormous difference.</p>
       <div class="cta-links">
-        <a href="https://www.google.com/search?q=Jane+Doe+artist+Cornwall" target="_blank" rel="noopener" class="btn">Leave a Google review</a>
-        <a href="https://www.facebook.com/" target="_blank" rel="noopener" class="btn btn-coast">Leave a Facebook review</a>
+        <a href="#" class="btn">Leave a Google review</a>
+        <a href="#" class="btn btn-coast">Leave a Facebook review</a>
       </div>
     </div>
 
   </main>
 
   <footer>
-    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
-    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+    <p>
+      &copy; <span id="yr"></span> Jane Aubrey Art. All rights reserved. &nbsp;|&nbsp;
+      <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
+      <a href="contact.html">Contact</a>
+    </p>
+    <p style="margin-top:0.5rem;">Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW &nbsp;|&nbsp; jane.mynne@live.co.uk</p>
   </footer>
 
   <div id="cookie-banner" role="region" aria-label="Cookie consent">
