@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Site Management — Jane Doe</title>
+  <title>Site Management — Jane Aubrey Art</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     body { background: #f0ece3; }
@@ -15,22 +15,11 @@
       align-items: center;
       justify-content: space-between;
     }
-    .hk-header h1 {
-      font-family: var(--font-display);
-      font-size: 1.5rem;
-      font-weight: 300;
-    }
+    .hk-header h1 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 300; }
     .hk-header p { font-size: 0.8rem; color: var(--stone); margin-top: 0.2rem; }
     .hk-header a { color: var(--coast); font-size: 0.85rem; }
-
     .hk-page { max-width: 900px; margin: 0 auto; padding: 2rem; }
-
-    .hk-section {
-      background: var(--white);
-      box-shadow: var(--shadow-card);
-      margin-bottom: 2rem;
-      overflow: hidden;
-    }
+    .hk-section { background: var(--white); box-shadow: var(--shadow-card); margin-bottom: 2rem; overflow: hidden; }
     .hk-section-head {
       padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--sand);
@@ -38,126 +27,49 @@
       align-items: center;
       justify-content: space-between;
     }
-    .hk-section-head h2 {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      font-weight: 400;
-    }
+    .hk-section-head h2 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 400; }
     .hk-section-body { padding: 1.5rem; }
-
-    /* Status badge */
-    .badge {
-      display: inline-block;
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.6rem;
-      border-radius: 2px;
-    }
+    .badge { display: inline-block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 2px; }
     .badge-info { background: #dbeafe; color: #1e40af; }
     .badge-warn { background: #fef3c7; color: #92400e; }
-
-    /* Picture list */
-    .pic-list { list-style: none; }
-    .pic-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--sand);
+    .upload-area {
+      border: 2px dashed var(--sand);
+      padding: 2.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 1.5rem;
     }
-    .pic-item:last-child { border-bottom: none; }
-    .pic-thumb {
-      width: 60px; height: 60px;
-      object-fit: cover;
-      flex-shrink: 0;
-      background: var(--sand);
-    }
-    .pic-info { flex: 1; }
-    .pic-title { font-weight: 500; font-size: 0.95rem; }
-    .pic-meta { font-size: 0.8rem; color: var(--stone); }
-    .pic-actions { display: flex; gap: 0.5rem; }
-
-    .btn-sm {
-      font-size: 0.7rem;
-      padding: 0.35rem 0.8rem;
-      letter-spacing: 0.08em;
-    }
+    .upload-area:hover { border-color: var(--coast); background: #f8fbfc; }
+    .upload-area input { display: none; }
+    .upload-area .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .upload-area p { font-size: 0.88rem; color: var(--stone); }
+    .upload-area .preview-img { max-height: 200px; margin: 0 auto 1rem; display: none; box-shadow: var(--shadow-card); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn-sm { font-size: 0.72rem; padding: 0.4rem 0.9rem; letter-spacing: 0.08em; }
     .btn-danger { border-color: #b91c1c; color: #b91c1c; }
     .btn-danger:hover { background: #b91c1c; color: white; }
     .btn-sold { border-color: var(--slate); color: var(--slate); }
     .btn-sold:hover { background: var(--slate); color: var(--linen); }
-
-    /* Add form */
-    .add-form { border-top: 1px solid var(--sand); padding-top: 1.5rem; margin-top: 1.5rem; }
-    .add-form h3 {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 400;
-      margin-bottom: 1.25rem;
+    .pic-list { list-style: none; }
+    .pic-item { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 0; border-bottom: 1px solid var(--sand); }
+    .pic-item:last-child { border-bottom: none; }
+    .pic-thumb { width: 70px; height: 70px; object-fit: cover; flex-shrink: 0; background: var(--sand); }
+    .pic-info { flex: 1; min-width: 0; }
+    .pic-title { font-weight: 500; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pic-meta { font-size: 0.78rem; color: var(--stone); margin-top: 0.15rem; }
+    .pic-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+    .status-msg { padding: 0.85rem 1.1rem; font-size: 0.85rem; margin-bottom: 1rem; display: none; border-radius: 2px; }
+    .status-msg.success { background: #dcfce7; color: #166534; border-left: 3px solid #16a34a; }
+    .status-msg.error { background: #fee2e2; color: #991b1b; border-left: 3px solid #b91c1c; }
+    .status-msg.loading { background: #dbeafe; color: #1e40af; border-left: 3px solid #3b82f6; }
+    .empty-note { font-size: 0.88rem; color: var(--stone); font-style: italic; padding: 1rem 0; }
+    .progress-wrap { background: var(--sand); height: 4px; margin-bottom: 1rem; display: none; }
+    .progress-bar { height: 100%; background: var(--coast); width: 0%; transition: width 0.3s; }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .pic-actions { flex-direction: column; }
     }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    /* File upload */
-    .file-upload-wrap {
-      border: 2px dashed var(--sand);
-      padding: 2rem;
-      text-align: center;
-      cursor: pointer;
-      transition: border-color 0.2s;
-    }
-    .file-upload-wrap:hover { border-color: var(--coast); }
-    .file-upload-wrap input[type=file] { display: none; }
-    .file-upload-wrap p { font-size: 0.85rem; color: var(--stone); margin-top: 0.5rem; }
-
-    /* Info box */
-    .info-box {
-      background: #eff6ff;
-      border-left: 3px solid var(--coast);
-      padding: 1rem 1.25rem;
-      font-size: 0.85rem;
-      color: var(--slate);
-      margin-bottom: 1.5rem;
-    }
-    .info-box strong { color: var(--ink); }
-
-    /* GitHub instructions */
-    .github-steps { counter-reset: steps; list-style: none; }
-    .github-steps li {
-      counter-increment: steps;
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--sand);
-      font-size: 0.88rem;
-      color: var(--slate);
-    }
-    .github-steps li:last-child { border-bottom: none; }
-    .github-steps li::before {
-      content: counter(steps);
-      flex-shrink: 0;
-      width: 1.6rem; height: 1.6rem;
-      background: var(--coast);
-      color: white;
-      font-size: 0.72rem;
-      font-weight: 500;
-      display: flex; align-items: center; justify-content: center;
-    }
-    code {
-      background: var(--linen);
-      border: 1px solid var(--sand);
-      padding: 0.1rem 0.4rem;
-      font-size: 0.82rem;
-      font-family: monospace;
-      color: var(--coast-dark);
-    }
-
-    .empty-note { font-size: 0.88rem; color: var(--stone); font-style: italic; }
   </style>
 </head>
 <body>
@@ -165,405 +77,293 @@
   <div class="hk-header">
     <div>
       <h1>Site management</h1>
-      <p>Jane Doe — artist website housekeeping</p>
+      <p>Jane Aubrey Art — housekeeping</p>
     </div>
     <a href="index.html">← View website</a>
   </div>
 
   <div class="hk-page">
 
-    <!-- =====================================================
-         IMPORTANT NOTICE
-         ===================================================== -->
-    <div class="info-box">
-      <strong>How this page works:</strong> This page shows you what to do — but because the site is hosted 
-      on GitHub Pages (a static host), changes are made by editing files and uploading them to GitHub. 
-      Each section below tells you exactly which file to change and what to do. It's simpler than it sounds!
-    </div>
-
-    <!-- =====================================================
-         1. PICTURES FOR SALE
-         ===================================================== -->
     <div class="hk-section">
       <div class="hk-section-head">
-        <h2>Pictures for sale</h2>
+        <h2>Add a new painting for sale</h2>
+      </div>
+      <div class="hk-section-body">
+        <div id="add-status" class="status-msg"></div>
+        <div class="progress-wrap" id="progress-wrap">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="upload-area" onclick="document.getElementById('new-image').click()">
+          <input type="file" id="new-image" accept="image/*" onchange="previewImage(this)">
+          <img id="preview-img" class="preview-img" alt="Preview">
+          <div class="upload-icon">🖼️</div>
+          <p><strong>Click to choose a photo</strong><br>JPG or PNG, at least 1200px wide for best quality</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="new-title">Title <span style="color:var(--coast)">*</span></label>
+            <input type="text" id="new-title" placeholder="e.g. Cape Cornwall, Evening">
+          </div>
+          <div class="form-group">
+            <label for="new-price">Price (£) <span style="color:var(--coast)">*</span></label>
+            <input type="number" id="new-price" placeholder="e.g. 75" min="0">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="new-medium">Medium</label>
+            <input type="text" id="new-medium" placeholder="e.g. Watercolour" value="Watercolour">
+          </div>
+          <div class="form-group">
+            <label for="new-year">Year painted</label>
+            <input type="number" id="new-year" placeholder="e.g. 2024">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="new-dimensions">Dimensions (optional)</label>
+          <input type="text" id="new-dimensions" placeholder="e.g. 40 × 30 cm">
+        </div>
+        <button class="btn btn-filled" onclick="addPainting()" id="add-btn">
+          Upload &amp; add to For Sale
+        </button>
+      </div>
+    </div>
+
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>Currently for sale</h2>
         <span class="badge badge-info" id="forsale-count">Loading…</span>
       </div>
       <div class="hk-section-body">
-
+        <div id="forsale-status" class="status-msg"></div>
         <ul class="pic-list" id="forsale-list">
-          <li class="empty-note" id="forsale-empty">No pictures for sale listed yet.</li>
+          <li class="empty-note">Loading…</li>
         </ul>
-
-        <!-- Add new picture -->
-        <div class="add-form">
-          <h3>Add a new picture for sale</h3>
-
-          <div class="info-box" style="margin-bottom:1.25rem;">
-            To add a picture: fill in the details below, then follow the upload steps in the 
-            "How to publish changes" section at the bottom of this page.
-          </div>
-
-          <div class="form-group">
-            <label>Photo file</label>
-            <div class="file-upload-wrap" onclick="document.getElementById('new-image').click()">
-              <input type="file" id="new-image" accept="image/*" onchange="previewImage(this)">
-              <div id="image-preview" style="margin-bottom:0.75rem;display:none;">
-                <img id="preview-img" style="max-height:160px;margin:0 auto;" alt="">
-              </div>
-              <p>Click to choose a photo — JPG or PNG, ideally 1200px wide or larger</p>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Title</label>
-              <input type="text" id="new-title" placeholder="e.g. Cape Cornwall, Evening">
-            </div>
-            <div class="form-group">
-              <label>Price (£)</label>
-              <input type="number" id="new-price" placeholder="e.g. 450" min="0">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label>Medium</label>
-              <input type="text" id="new-medium" placeholder="e.g. Oil on canvas">
-            </div>
-            <div class="form-group">
-              <label>Dimensions (optional)</label>
-              <input type="text" id="new-dimensions" placeholder="e.g. 40 × 30 cm">
-            </div>
-          </div>
-
-          <button class="btn btn-filled" onclick="generateAddInstructions()">
-            Generate upload instructions
-          </button>
-
-          <div id="add-instructions" style="display:none;margin-top:1.5rem;"></div>
-        </div>
-
       </div>
     </div>
 
-    <!-- =====================================================
-         2. SOLD WORKS
-         ===================================================== -->
     <div class="hk-section">
       <div class="hk-section-head">
-        <h2>Sold works</h2>
+        <h2>Sold works archive</h2>
         <span class="badge badge-warn" id="sold-count">Loading…</span>
       </div>
       <div class="hk-section-body">
-        <p style="font-size:0.88rem;color:var(--slate);margin-bottom:1rem;">
-          To move a piece from "For sale" to "Sold", use the <strong>Mark as sold</strong> button below.
-          It will generate the exact JSON edit you need to make.
-        </p>
-        <ul class="pic-list" id="forsale-for-selling">
-          <li class="empty-note">No pictures for sale yet.</li>
-        </ul>
-        <hr style="border:none;border-top:1px solid var(--sand);margin:1.5rem 0;">
-        <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:400;margin-bottom:1rem;">Currently in sold archive</h3>
+        <div id="sold-status" class="status-msg"></div>
         <ul class="pic-list" id="sold-list">
-          <li class="empty-note" id="sold-empty">No sold works listed yet.</li>
+          <li class="empty-note">Loading…</li>
         </ul>
       </div>
     </div>
 
-    <!-- =====================================================
-         3. BIOGRAPHY & PROFILE
-         ===================================================== -->
-    <div class="hk-section">
-      <div class="hk-section-head">
-        <h2>Biography &amp; profile photo</h2>
-      </div>
-      <div class="hk-section-body">
-
-        <div class="info-box">
-          <strong>To edit the biography text:</strong> Open <code>index.html</code> in a text editor. 
-          Find the section marked <code>&lt;!-- EDIT YOUR BIOGRAPHY TEXT BELOW --&gt;</code> and 
-          change the text between the <code>&lt;p&gt;</code> tags. Save the file and upload to GitHub.
-        </div>
-
-        <div class="info-box">
-          <strong>To change the profile photo:</strong> Prepare a portrait image (JPG, ideally 600×800px or larger). 
-          Name it <code>profile.jpg</code> and upload it to the <code>images/profile/</code> folder on GitHub, 
-          replacing the existing file.
-        </div>
-
-        <div class="info-box">
-          <strong>To change the hero background image</strong> (the large image on the home page): 
-          Name your image <code>hero-bg.jpg</code> and upload it to <code>images/profile/</code>, 
-          replacing the existing file.
-        </div>
-
-        <div class="info-box" style="margin-bottom:0;">
-          <strong>To edit details</strong> (location, medium, commission status): In <code>index.html</code>, 
-          find the <code>bio-details</code> section and update the text inside the 
-          <code>&lt;p class="bio-detail-value"&gt;</code> tags.
-        </div>
-
-      </div>
-    </div>
-
-    <!-- =====================================================
-         4. REVIEWS
-         ===================================================== -->
-    <div class="hk-section">
-      <div class="hk-section-head">
-        <h2>Reviews &amp; quotes</h2>
-      </div>
-      <div class="hk-section-body">
-        <div class="info-box">
-          <strong>To update review platform links:</strong> Open <code>reviews.html</code>. 
-          Find each <code>&lt;a href="..."&gt;</code> in the platform cards and replace the 
-          <code>href</code> with your actual Google, Facebook, or Etsy review page URL.
-        </div>
-        <div class="info-box" style="margin-bottom:0;">
-          <strong>To add or change featured quotes:</strong> In <code>reviews.html</code>, find the 
-          <code>&lt;!-- EDIT: Replace these with real quotes --&gt;</code> comment and 
-          edit the quote cards below it.
-        </div>
-      </div>
-    </div>
-
-    <!-- =====================================================
-         5. CONTACT DETAILS
-         ===================================================== -->
-    <div class="hk-section">
-      <div class="hk-section-head">
-        <h2>Contact details &amp; address</h2>
-      </div>
-      <div class="hk-section-body">
-        <div class="info-box" style="margin-bottom:0;">
-          Contact details (email, address) appear in the footer of <strong>every page</strong> and on 
-          <code>contact.html</code> and <code>privacy.html</code>. Search each file for 
-          <code>jane@example.com</code> and <code>TR18 XXX</code> and replace with real details. 
-          Also update the <code>mailto:</code> links in <code>buy.html</code> and <code>contact.html</code>.
-        </div>
-      </div>
-    </div>
-
-    <!-- =====================================================
-         6. FORM SERVICE SETUP
-         ===================================================== -->
-    <div class="hk-section">
-      <div class="hk-section-head">
-        <h2>Setting up the contact form (one-time)</h2>
-        <span class="badge badge-warn">Action needed</span>
-      </div>
-      <div class="hk-section-body">
-        <p style="font-size:0.88rem;color:var(--slate);margin-bottom:1.25rem;">
-          Currently the contact and buy forms use a <code>mailto:</code> link as a temporary fallback — 
-          this opens the visitor's email app, which isn't ideal. To get proper form submissions delivered 
-          to your inbox, sign up for <strong>Formspree</strong> (free for up to 50 submissions/month):
-        </p>
-        <ol class="github-steps">
-          <li>Go to <strong>formspree.io</strong> and create a free account with your email address.</li>
-          <li>Create a new form — Formspree will give you a unique URL like <code>https://formspree.io/f/xyzabc12</code></li>
-          <li>In <code>buy.html</code> and <code>contact.html</code>, find the commented-out 
-              <code>OPTION A: Formspree</code> section and uncomment it, replacing <code>YOUR_ID</code> 
-              with your Formspree form ID.</li>
-          <li>Remove or comment out the <code>mailto:</code> fallback lines below it.</li>
-          <li>Upload the changed files to GitHub and test by submitting a test enquiry.</li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- =====================================================
-         7. HOW TO PUBLISH CHANGES TO GITHUB
-         ===================================================== -->
-    <div class="hk-section">
-      <div class="hk-section-head">
-        <h2>How to publish changes to GitHub</h2>
-      </div>
-      <div class="hk-section-body">
-        <p style="font-size:0.88rem;color:var(--slate);margin-bottom:1.25rem;">
-          All changes to the site are made by uploading or editing files on GitHub. Here's the simplest method 
-          using the GitHub website (no technical tools needed):
-        </p>
-        <ol class="github-steps">
-          <li>Go to <strong>github.com</strong> and log into your account.</li>
-          <li>Click on your repository (it will be named something like <code>yourdomain.github.io</code>).</li>
-          <li>
-            <strong>To upload a new image:</strong> Navigate to the correct folder 
-            (e.g. <code>images/gallery/</code>), click <strong>Add file → Upload files</strong>, 
-            drag your image in, scroll down and click <strong>Commit changes</strong>.
-          </li>
-          <li>
-            <strong>To edit a JSON file</strong> (adding/removing works): Click on the file 
-            (e.g. <code>data/forsale.json</code>), then click the pencil icon ✏️ to edit it. 
-            Make your changes, then click <strong>Commit changes</strong>.
-          </li>
-          <li>
-            <strong>To edit an HTML file</strong> (biography text, links, etc.): Click on the file, 
-            then click the pencil icon ✏️ to edit. Find the text to change, update it, 
-            click <strong>Commit changes</strong>.
-          </li>
-          <li>Wait 1–2 minutes. GitHub Pages rebuilds automatically. Refresh your website to see the change.</li>
-        </ol>
-      </div>
-    </div>
-
-  </div><!-- end hk-page -->
+  </div>
 
   <script>
-    // Load and display current for-sale and sold items
-    let forsaleData = [];
-    let soldData = [];
+    const CONFIG = {
+      cloudName:    'ddsl1ouhn',
+      uploadPreset: 'janeaubreyart',
+      githubToken:  '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',
+      githubOwner:  'janeaubrey',
+      githubRepo:   'janeaubreyart.github.io',
+      githubBranch: 'main'
+    };
 
-    Promise.all([
-      fetch('data/forsale.json').then(r => r.json()).catch(() => []),
-      fetch('data/sold.json').then(r => r.json()).catch(() => [])
-    ]).then(([fs, sold]) => {
-      forsaleData = fs;
-      soldData = sold;
-      renderForsale();
-      renderSold();
-    });
+    let forsaleData = [];
+    let soldData    = [];
+
+    async function init() {
+      try {
+        const [fs, sold] = await Promise.all([
+          fetch('data/forsale.json?t=' + Date.now()).then(r => r.json()).catch(() => []),
+          fetch('data/sold.json?t='    + Date.now()).then(r => r.json()).catch(() => [])
+        ]);
+        forsaleData = fs;
+        soldData    = sold;
+        renderForsale();
+        renderSold();
+      } catch(e) {
+        showStatus('add-status', 'error', 'Could not load painting data.');
+      }
+    }
 
     function renderForsale() {
       const list = document.getElementById('forsale-list');
-      const sellList = document.getElementById('forsale-for-selling');
-      document.getElementById('forsale-count').textContent = forsaleData.length + ' items';
-
-      if (!forsaleData.length) return;
-
+      document.getElementById('forsale-count').textContent = forsaleData.length + ' paintings';
+      if (!forsaleData.length) { list.innerHTML = '<li class="empty-note">No paintings for sale yet.</li>'; return; }
       list.innerHTML = '';
-      sellList.innerHTML = '';
-
       forsaleData.forEach((item, i) => {
-        // Main list
         const li = document.createElement('li');
         li.className = 'pic-item';
         li.innerHTML = `
-          <img class="pic-thumb" src="images/gallery/${item.image}" alt="${item.title}" onerror="this.style.background='var(--sand)'">
+          <img class="pic-thumb" src="${item.cloudUrl || 'images/gallery/' + item.image}" alt="${item.title}" onerror="this.style.opacity=0.3">
           <div class="pic-info">
             <p class="pic-title">${item.title}</p>
-            <p class="pic-meta">${item.medium || ''} ${item.dimensions ? '· ' + item.dimensions : ''} · £${Number(item.price).toLocaleString('en-GB')}</p>
+            <p class="pic-meta">${item.medium || 'Watercolour'}${item.year ? ' · ' + item.year : ''} · £${Number(item.price).toLocaleString('en-GB')}</p>
           </div>
           <div class="pic-actions">
-            <button class="btn btn-sm btn-danger" onclick="showRemoveInstructions(${i}, 'forsale')">Remove</button>
+            <button class="btn btn-sm btn-sold" onclick="markAsSold(${i})">Mark sold</button>
+            <button class="btn btn-sm btn-danger" onclick="removePainting(${i})">Remove</button>
           </div>`;
         list.appendChild(li);
-
-        // Sell list (for marking as sold)
-        const li2 = document.createElement('li');
-        li2.className = 'pic-item';
-        li2.innerHTML = `
-          <img class="pic-thumb" src="images/gallery/${item.image}" alt="${item.title}" onerror="this.style.background='var(--sand)'">
-          <div class="pic-info">
-            <p class="pic-title">${item.title}</p>
-            <p class="pic-meta">£${Number(item.price).toLocaleString('en-GB')}</p>
-          </div>
-          <div class="pic-actions">
-            <button class="btn btn-sm btn-sold" onclick="showMarkSoldInstructions(${i})">Mark as sold</button>
-          </div>`;
-        sellList.appendChild(li2);
       });
     }
 
     function renderSold() {
       const list = document.getElementById('sold-list');
-      document.getElementById('sold-count').textContent = soldData.length + ' items';
-      if (!soldData.length) return;
+      document.getElementById('sold-count').textContent = soldData.length + ' paintings';
+      if (!soldData.length) { list.innerHTML = '<li class="empty-note">No sold works yet.</li>'; return; }
       list.innerHTML = '';
       soldData.forEach((item, i) => {
         const li = document.createElement('li');
         li.className = 'pic-item';
         li.innerHTML = `
-          <img class="pic-thumb" src="images/sold/${item.image}" alt="${item.title}" onerror="this.style.background='var(--sand)'">
+          <img class="pic-thumb" src="${item.cloudUrl || 'images/sold/' + item.image}" alt="${item.title}" onerror="this.style.opacity=0.3">
           <div class="pic-info">
             <p class="pic-title">${item.title}</p>
-            <p class="pic-meta">${item.medium || ''} ${item.year ? '· ' + item.year : ''}</p>
+            <p class="pic-meta">${item.medium || 'Watercolour'}${item.year ? ' · ' + item.year : ''} · Sold${item.soldYear ? ' ' + item.soldYear : ''}</p>
           </div>
           <div class="pic-actions">
-            <button class="btn btn-sm btn-danger" onclick="showRemoveInstructions(${i}, 'sold')">Remove</button>
+            <button class="btn btn-sm btn-danger" onclick="removeSold(${i})">Remove</button>
           </div>`;
         list.appendChild(li);
       });
     }
 
-    // --- Image preview ---
     function previewImage(input) {
       if (!input.files || !input.files[0]) return;
       const reader = new FileReader();
       reader.onload = e => {
-        document.getElementById('preview-img').src = e.target.result;
-        document.getElementById('image-preview').style.display = 'block';
+        const img = document.getElementById('preview-img');
+        img.src = e.target.result;
+        img.style.display = 'block';
       };
       reader.readAsDataURL(input.files[0]);
     }
 
-    // --- Generate add instructions ---
-    function generateAddInstructions() {
-      const title      = document.getElementById('new-title').value.trim();
-      const price      = document.getElementById('new-price').value.trim();
-      const medium     = document.getElementById('new-medium').value.trim();
-      const dimensions = document.getElementById('new-dimensions').value.trim();
-      const file       = document.getElementById('new-image').files[0];
-
-      if (!title || !price) {
-        alert('Please enter at least a title and price.');
-        return;
+    async function addPainting() {
+      const title  = document.getElementById('new-title').value.trim();
+      const price  = document.getElementById('new-price').value.trim();
+      const medium = document.getElementById('new-medium').value.trim() || 'Watercolour';
+      const year   = document.getElementById('new-year').value.trim();
+      const dims   = document.getElementById('new-dimensions').value.trim();
+      const file   = document.getElementById('new-image').files[0];
+      if (!title || !price) { showStatus('add-status', 'error', 'Please enter at least a title and price.'); return; }
+      if (!file) { showStatus('add-status', 'error', 'Please choose an image file.'); return; }
+      const btn = document.getElementById('add-btn');
+      btn.disabled = true; btn.textContent = 'Uploading…';
+      showStatus('add-status', 'loading', 'Uploading image…');
+      showProgress(0);
+      try {
+        const cloudUrl = await uploadToCloudinary(file);
+        showStatus('add-status', 'loading', 'Image uploaded. Saving to site…');
+        showProgress(60);
+        const newItem = { id: Date.now(), title, price: Number(price), medium, year: year || '', dimensions: dims, cloudUrl, image: '' };
+        const newData = [...forsaleData, newItem];
+        await updateGitHubFile('data/forsale.json', newData, 'Add painting: ' + title);
+        showProgress(100);
+        forsaleData = newData;
+        renderForsale();
+        showStatus('add-status', 'success', '✓ "' + title + '" added to For Sale. It will appear on the site within a minute.');
+        document.getElementById('new-title').value = '';
+        document.getElementById('new-price').value = '';
+        document.getElementById('new-year').value = '';
+        document.getElementById('new-dimensions').value = '';
+        document.getElementById('new-image').value = '';
+        document.getElementById('preview-img').style.display = 'none';
+      } catch(e) {
+        showStatus('add-status', 'error', 'Error: ' + e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Upload & add to For Sale';
+        setTimeout(() => hideProgress(), 1500);
       }
-
-      const filename = file ? file.name : 'your-image-file.jpg';
-      const newId = Date.now();
-      const newEntry = { id: newId, image: filename, title, price: Number(price), medium, dimensions };
-      const currentJson = JSON.stringify(forsaleData, null, 2);
-      forsaleData.push(newEntry);
-      const newJson = JSON.stringify(forsaleData, null, 2);
-
-      document.getElementById('add-instructions').style.display = 'block';
-      document.getElementById('add-instructions').innerHTML = `
-        <div class="info-box" style="background:#f0fdf4;border-color:#16a34a;">
-          <strong>Steps to add "${title}" to the site:</strong><br><br>
-          <strong>Step 1</strong> — Upload the image file:<br>
-          Go to your GitHub repo → <code>images/gallery/</code> → Add file → Upload files<br>
-          Upload: <code>${filename}</code><br><br>
-          <strong>Step 2</strong> — Update forsale.json:<br>
-          Go to <code>data/forsale.json</code> → click pencil ✏️ → replace ALL content with:<br>
-          <textarea style="width:100%;height:160px;font-family:monospace;font-size:0.78rem;border:1px solid var(--sand);padding:0.75rem;margin-top:0.5rem;" readonly>${newJson}</textarea>
-          <br>Click <strong>Commit changes</strong>. Wait 1–2 minutes, then check your For Sale page.
-        </div>`;
     }
 
-    // --- Remove instructions ---
-    function showRemoveInstructions(index, list) {
-      const data = list === 'forsale' ? forsaleData : soldData;
-      const item = data[index];
-      const filename = list === 'forsale' ? 'data/forsale.json' : 'data/sold.json';
-      const newData = data.filter((_, i) => i !== index);
-      const newJson = JSON.stringify(newData, null, 2);
-      alert(`To remove "${item.title}":\n\nGo to ${filename} on GitHub → click pencil ✏️ → replace all content with the JSON shown below.\n\nThen copy this into the file:\n\n${newJson}`);
-    }
-
-    // --- Mark as sold ---
-    function showMarkSoldInstructions(index) {
+    async function markAsSold(index) {
       const item = forsaleData[index];
-      const year = new Date().getFullYear();
-      const soldEntry = { id: item.id, image: item.image, title: item.title, medium: item.medium, year };
-      const newForsale = forsaleData.filter((_, i) => i !== index);
-      const newSold = [...soldData, soldEntry];
-
-      const box = document.createElement('div');
-      box.className = 'info-box';
-      box.style.background = '#fffbeb';
-      box.style.borderColor = '#f59e0b';
-      box.innerHTML = `
-        <strong>To mark "${item.title}" as sold:</strong><br><br>
-        <strong>Step 1</strong> — Move the image file on GitHub:<br>
-        Upload <code>${item.image}</code> to <code>images/sold/</code> (you can download it from <code>images/gallery/</code> first).<br><br>
-        <strong>Step 2</strong> — Update <code>data/forsale.json</code> (remove it from sale):<br>
-        <textarea style="width:100%;height:100px;font-family:monospace;font-size:0.75rem;border:1px solid var(--sand);padding:0.5rem;" readonly>${JSON.stringify(newForsale, null, 2)}</textarea><br><br>
-        <strong>Step 3</strong> — Update <code>data/sold.json</code> (add it to sold archive):<br>
-        <textarea style="width:100%;height:100px;font-family:monospace;font-size:0.75rem;border:1px solid var(--sand);padding:0.5rem;" readonly>${JSON.stringify(newSold, null, 2)}</textarea>
-      `;
-      document.querySelector('.hk-section:nth-child(3) .hk-section-body').appendChild(box);
-      box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (!confirm('Mark "' + item.title + '" as sold?')) return;
+      showStatus('forsale-status', 'loading', 'Marking "' + item.title + '" as sold…');
+      try {
+        const soldItem   = { ...item, soldYear: new Date().getFullYear() };
+        const newForsale = forsaleData.filter((_, i) => i !== index);
+        const newSold    = [...soldData, soldItem];
+        await updateGitHubFile('data/forsale.json', newForsale, 'Mark as sold: ' + item.title);
+        await updateGitHubFile('data/sold.json',    newSold,    'Add to sold: '  + item.title);
+        forsaleData = newForsale; soldData = newSold;
+        renderForsale(); renderSold();
+        showStatus('forsale-status', 'success', '✓ "' + item.title + '" moved to Sold.');
+      } catch(e) { showStatus('forsale-status', 'error', 'Error: ' + e.message); }
     }
+
+    async function removePainting(index) {
+      const item = forsaleData[index];
+      if (!confirm('Permanently remove "' + item.title + '" from the site?')) return;
+      showStatus('forsale-status', 'loading', 'Removing…');
+      try {
+        const newData = forsaleData.filter((_, i) => i !== index);
+        await updateGitHubFile('data/forsale.json', newData, 'Remove painting: ' + item.title);
+        forsaleData = newData; renderForsale();
+        showStatus('forsale-status', 'success', '✓ "' + item.title + '" removed.');
+      } catch(e) { showStatus('forsale-status', 'error', 'Error: ' + e.message); }
+    }
+
+    async function removeSold(index) {
+      const item = soldData[index];
+      if (!confirm('Remove "' + item.title + '" from the sold archive?')) return;
+      showStatus('sold-status', 'loading', 'Removing…');
+      try {
+        const newData = soldData.filter((_, i) => i !== index);
+        await updateGitHubFile('data/sold.json', newData, 'Remove from sold: ' + item.title);
+        soldData = newData; renderSold();
+        showStatus('sold-status', 'success', '✓ "' + item.title + '" removed from sold archive.');
+      } catch(e) { showStatus('sold-status', 'error', 'Error: ' + e.message); }
+    }
+
+    async function uploadToCloudinary(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CONFIG.uploadPreset);
+      formData.append('folder', 'gallery');
+      const response = await fetch('https://api.cloudinary.com/v1_1/' + CONFIG.cloudName + '/image/upload', { method: 'POST', body: formData });
+      if (!response.ok) throw new Error('Cloudinary upload failed');
+      const data = await response.json();
+      return data.secure_url;
+    }
+
+    async function updateGitHubFile(path, data, message) {
+      const apiBase = 'https://api.github.com/repos/' + CONFIG.githubOwner + '/' + CONFIG.githubRepo + '/contents/' + path;
+      const headers = {
+        'Authorization': 'token ' + CONFIG.githubToken,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      };
+      const current = await fetch(apiBase + '?ref=' + CONFIG.githubBranch, { headers });
+      let sha = null;
+      if (current.ok) { const d = await current.json(); sha = d.sha; }
+      const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+      const body = { message, content, branch: CONFIG.githubBranch };
+      if (sha) body.sha = sha;
+      const response = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) });
+      if (!response.ok) { const err = await response.json(); throw new Error(err.message || 'GitHub update failed'); }
+    }
+
+    function showStatus(id, type, message) {
+      const el = document.getElementById(id);
+      el.className = 'status-msg ' + type;
+      el.textContent = message;
+      el.style.display = 'block';
+      if (type === 'success') setTimeout(() => el.style.display = 'none', 5000);
+    }
+
+    function showProgress(pct) {
+      document.getElementById('progress-wrap').style.display = 'block';
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }
+
+    function hideProgress() {
+      document.getElementById('progress-wrap').style.display = 'none';
+      document.getElementById('progress-bar').style.width = '0%';
+    }
+
+    init();
   </script>
 </body>
 </html>
