@@ -80,9 +80,50 @@
       .profile-thumbs { grid-template-columns: 1fr; }
       .pic-actions { flex-direction: column; }
     }
+    /* ── Login overlay ── */
+    #login-overlay {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #f0ece3;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #login-overlay.hidden { display: none; }
+    .login-box {
+      background: var(--white);
+      box-shadow: var(--shadow-card);
+      padding: 3rem 2.5rem;
+      width: 100%; max-width: 380px;
+      text-align: center;
+    }
+    .login-box h1 {
+      font-family: var(--font-display);
+      font-size: 1.6rem; font-weight: 300;
+      margin-bottom: 0.4rem; color: var(--ink);
+    }
+    .login-box p { font-size: 0.82rem; color: var(--stone); margin-bottom: 2rem; }
+    .login-box input[type="password"] {
+      width: 100%; padding: 0.75rem 1rem;
+      border: 1px solid var(--sand); background: var(--white);
+      font-family: var(--font-body); font-size: 0.95rem;
+      color: var(--ink); margin-bottom: 1rem; box-sizing: border-box;
+      text-align: center; letter-spacing: 0.1em;
+    }
+    .login-box input[type="password"]:focus { outline: none; border-color: var(--coast); }
+    .login-error { font-size: 0.8rem; color: #b91c1c; margin-top: 0.5rem; display: none; }
   </style>
 </head>
 <body>
+
+  <!-- Login overlay -->
+  <div id="login-overlay">
+    <div class="login-box">
+      <h1>Jane Aubrey Art</h1>
+      <p>Site management</p>
+      <input type="password" id="login-password" placeholder="Password"
+        onkeydown="if(event.key==='Enter') checkLogin()">
+      <button class="btn btn-filled" onclick="checkLogin()" style="width:100%;">Enter</button>
+      <p class="login-error" id="login-error">Incorrect password</p>
+    </div>
+  </div>
 
   <div class="hk-header">
     <div>
@@ -566,6 +607,38 @@
 
     function escHtml(str) {
       return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    // ── Login ─────────────────────────────────────────────────────────────────
+
+    const PASSWORD_HASH = '6c30a5b0c6e1afb4b2c48a4a4e4e8c8f2e9b4e8d1d7d3a6c2b1e4f5a3d8c7b2';
+
+    function hashString(str) {
+      // Simple hash for client-side check — not cryptographic, just a deterrent
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = ((hash << 5) - hash) + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash).toString(16).padStart(8, '0');
+    }
+
+    function checkLogin() {
+      const val = document.getElementById('login-password').value;
+      if (val === 'Lunarloki') {
+        sessionStorage.setItem('hk_auth', '1');
+        document.getElementById('login-overlay').classList.add('hidden');
+        document.getElementById('login-password').value = '';
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+        document.getElementById('login-password').value = '';
+        document.getElementById('login-password').focus();
+      }
+    }
+
+    // Check on load
+    if (sessionStorage.getItem('hk_auth') === '1') {
+      document.getElementById('login-overlay').classList.add('hidden');
     }
 
     init();
