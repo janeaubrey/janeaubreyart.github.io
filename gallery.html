@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery — Jane Aubrey Art, Cornwall</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .sale-notice {
+      background: var(--white);
+      border-left: 3px solid var(--coast);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 3rem;
+      font-size: 0.9rem;
+      color: var(--slate);
+      box-shadow: var(--shadow-card);
+    }
+    .sale-notice strong { color: var(--ink); font-weight: 500; }
+    .empty-state {
+      text-align: center;
+      padding: 5rem 2rem;
+      color: var(--stone);
+    }
+    .empty-state p { font-family: var(--font-display); font-size: 1.5rem; font-weight: 300; }
+    .gallery-card-image {
+      position: relative;
+      overflow: hidden;
+    }
+    .gallery-card.sold .gallery-card-image::after {
+      content: 'Sold';
+      position: absolute;
+      top: 18px;
+      right: -35px;
+      width: 140px;
+      text-align: center;
+      background: var(--slate);
+      color: var(--linen);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.35rem 0;
+      transform: rotate(45deg);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      pointer-events: none;
+    }
+    .gallery-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1.25rem 2rem;
+      background: var(--white);
+      box-shadow: var(--shadow-card);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .gallery-toolbar-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .gallery-toolbar-label {
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--stone);
+    }
+    .gallery-filter {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .gallery-ctrl {
+      padding: 0.55rem 1.1rem;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--sand);
+      background: transparent;
+      color: var(--slate);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .gallery-ctrl:hover { border-color: var(--coast); color: var(--coast); }
+    .gallery-ctrl.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--linen);
+    }
+    .gallery-sort {
+      min-width: 220px;
+      padding: 0.55rem 2rem 0.55rem 0.85rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--ink);
+      background: var(--white);
+      border: 1px solid var(--sand);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%238c8579' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+    }
+    .gallery-sort:focus { outline: none; border-color: var(--coast); }
+    @media (max-width: 600px) {
+      .gallery-toolbar { flex-direction: column; align-items: stretch; }
+      .gallery-filter { flex-wrap: wrap; }
+      .gallery-sort { width: 100%; min-width: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-brand">Jane Aubrey <span>Art</span></a>
+    <button class="nav-toggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Biography</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="location.html">Location</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="reviews.html">Reviews</a></li>
+    </ul>
+  </nav>
+
+  <main class="page">
+    <div class="page-header">
+      <p class="subtitle">Paintings</p>
+      <h1>Gallery</h1>
+    </div>
+
+    <div class="sale-notice">
+      <strong>How to purchase:</strong> Click "Enquire to buy" on any available piece. You'll receive
+      a response with bank transfer details — payment is by BACS (direct bank transfer),
+      with no extra fees for either party. Works are dispatched carefully packaged once
+      payment is received.
+    </div>
+
+    <div class="gallery-toolbar" id="gallery-toolbar" hidden>
+      <div class="gallery-toolbar-group">
+        <span class="gallery-toolbar-label">Filter</span>
+        <div class="gallery-filter" role="group" aria-label="Filter paintings">
+          <button type="button" class="gallery-ctrl active" data-filter="all">All</button>
+          <button type="button" class="gallery-ctrl" data-filter="forsale">For Sale only</button>
+        </div>
+      </div>
+      <div class="gallery-toolbar-group">
+        <label class="gallery-toolbar-label" for="gallery-sort">Sort</label>
+        <select id="gallery-sort" class="gallery-sort">
+          <option value="newest">Newest first</option>
+          <option value="price-asc">Price low–high</option>
+          <option value="price-desc">Price high–low</option>
+          <option value="size-asc">Size small–large</option>
+          <option value="size-desc">Size large–small</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="gallery" class="gallery-grid">
+      <div class="empty-state" id="empty">
+        <p>No works in the gallery yet.</p>
+        <div style="margin-top:1.5rem;">
+          <a href="contact.html" class="btn btn-coast">Enquire about commissions</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="lightbox" class="lightbox" aria-modal="true" role="dialog">
+    <span class="lightbox-close" aria-label="Close">&times;</span>
+    <img src="" alt="">
+  </div>
+
+  <footer>
+    <p>
+      &copy; <span id="yr"></span> Jane Aubrey Art. All rights reserved. &nbsp;|&nbsp;
+      <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
+      <a href="contact.html">Contact</a>
+    </p>
+    <p style="margin-top:0.5rem;">Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW &nbsp;|&nbsp; jane.mynne@live.co.uk</p>
+  </footer>
+
+  <div id="cookie-banner" role="region" aria-label="Cookie consent">
+    <p>This site uses cookies to display maps and remember your preferences. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    <div class="cookie-actions">
+      <button id="cookie-decline" class="btn" style="border-color:var(--stone);color:var(--linen);font-size:0.72rem;padding:0.5rem 1rem;">Decline</button>
+      <button id="cookie-accept" class="btn btn-coast" style="font-size:0.72rem;padding:0.5rem 1rem;border-color:var(--coast);color:var(--coast);">Accept</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    const SUPABASE_URL = 'https://pmkitmlcezwcogsgmmxp.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_I4AGhe_kkZ-bXDML9dWm8A_Il5kQ5EU';
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    let allPaintings = [];
+    let currentFilter = 'all';
+    let currentSort = 'newest';
+
+    function escHtml(str) {
+      const el = document.createElement('span');
+      el.textContent = str;
+      return el.innerHTML;
+    }
+
+    function paintingSize(item) {
+      if (!item.width_mm || !item.height_mm) return null;
+      return item.width_mm * item.height_mm;
+    }
+
+    function sortPaintings(items) {
+      const sorted = items.slice();
+      switch (currentSort) {
+        case 'price-asc':
+          sorted.sort((a, b) => (Number(a.price) || 0) - (Number(b.price) || 0));
+          break;
+        case 'price-desc':
+          sorted.sort((a, b) => (Number(b.price) || 0) - (Number(a.price) || 0));
+          break;
+        case 'size-asc':
+          sorted.sort((a, b) => {
+            const sa = paintingSize(a), sb = paintingSize(b);
+            if (sa === null && sb === null) return 0;
+            if (sa === null) return 1;
+            if (sb === null) return -1;
+            return sa - sb;
+          });
+          break;
+        case 'size-desc':
+          sorted.sort((a, b) => {
+            const sa = paintingSize(a), sb = paintingSize(b);
+            if (sa === null && sb === null) return 0;
+            if (sa === null) return 1;
+            if (sb === null) return -1;
+            return sb - sa;
+          });
+          break;
+        default:
+          sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      }
+      return sorted;
+    }
+
+    function filterPaintings(items) {
+      if (currentFilter === 'forsale') {
+        return items.filter(item => item.status === 'forsale');
+      }
+      return items;
+    }
+
+    function buildCard(item) {
+      const isSold = item.status === 'sold';
+      const dims = (item.width_mm && item.height_mm)
+        ? item.width_mm + ' × ' + item.height_mm + ' mm'
+        : '';
+      const metaParts = isSold
+        ? [item.medium, item.year]
+        : [item.medium, dims];
+      const meta = metaParts.filter(Boolean).join(' · ');
+      const card = document.createElement('div');
+      card.className = 'gallery-card' + (isSold ? ' sold' : '');
+      const bodyContent = isSold
+        ? `
+          <h3 class="gallery-card-title">${escHtml(item.title)}</h3>
+          <p class="gallery-card-meta">${escHtml(meta)}</p>`
+        : `
+          <h3 class="gallery-card-title">${escHtml(item.title)}</h3>
+          <p class="gallery-card-meta">${escHtml(meta)}</p>
+          <p class="gallery-card-price">£${Number(item.price).toLocaleString('en-GB')}</p>
+          <a href="buy.html?id=${item.id}&title=${encodeURIComponent(item.title)}&price=${item.price}"
+            class="btn btn-coast" style="font-size:0.75rem;padding:0.55rem 1.1rem;">Enquire to buy</a>`;
+      card.innerHTML = `
+        <div class="gallery-card-image">
+          <img src="${escHtml(item.image_url)}" alt="${escHtml(item.title)}"
+            data-lightbox="${escHtml(item.image_url)}" data-title="${escHtml(item.title)}" loading="lazy">
+        </div>
+        <div class="gallery-card-body">${bodyContent}</div>`;
+      return card;
+    }
+
+    function bindLightbox() {
+      document.querySelectorAll('[data-lightbox]').forEach(el => {
+        el.style.cursor = 'zoom-in';
+        el.addEventListener('click', () => {
+          const lb = document.getElementById('lightbox');
+          lb.querySelector('img').src = el.dataset.lightbox;
+          lb.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+    }
+
+    function renderGallery() {
+      const grid = document.getElementById('gallery');
+      const items = sortPaintings(filterPaintings(allPaintings));
+      grid.innerHTML = '';
+
+      if (!items.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-state';
+        empty.innerHTML = currentFilter === 'forsale'
+          ? '<p>No works for sale at present.</p>'
+          : '<p>No works in the gallery yet.</p>';
+        grid.appendChild(empty);
+        return;
+      }
+
+      items.forEach(item => grid.appendChild(buildCard(item)));
+      bindLightbox();
+    }
+
+    function initToolbar() {
+      document.querySelectorAll('.gallery-ctrl[data-filter]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          currentFilter = btn.dataset.filter;
+          document.querySelectorAll('.gallery-ctrl[data-filter]').forEach(b => {
+            b.classList.toggle('active', b.dataset.filter === currentFilter);
+          });
+          renderGallery();
+        });
+      });
+
+      document.getElementById('gallery-sort').addEventListener('change', e => {
+        currentSort = e.target.value;
+        renderGallery();
+      });
+    }
+
+    async function loadPaintings() {
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/paintings?order=created_at.desc',
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+      );
+      if (!res.ok) return;
+      allPaintings = await res.json();
+      if (!allPaintings.length) return;
+
+      document.getElementById('empty').remove();
+      document.getElementById('gallery-toolbar').hidden = false;
+      initToolbar();
+      renderGallery();
+    }
+
+    loadPaintings().catch(() => {});
+  </script>
+</body>
+</html>

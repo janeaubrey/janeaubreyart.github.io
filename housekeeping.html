@@ -32,6 +32,7 @@
     .badge { display: inline-block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; border-radius: 2px; }
     .badge-info { background: #dbeafe; color: #1e40af; }
     .badge-warn { background: #fef3c7; color: #92400e; }
+    .badge-sold { background: var(--sand); color: var(--slate); }
     .upload-area {
       border: 2px dashed var(--sand);
       padding: 2.5rem;
@@ -256,29 +257,15 @@
       </div>
     </div>
 
-    <!-- CURRENTLY FOR SALE -->
+    <!-- ALL PAINTINGS -->
     <div class="hk-section">
       <div class="hk-section-head">
-        <h2>Currently for sale</h2>
-        <span class="badge badge-info" id="forsale-count">Loading…</span>
+        <h2>All paintings</h2>
+        <span class="badge badge-info" id="paintings-count">Loading…</span>
       </div>
       <div class="hk-section-body">
-        <div id="forsale-status" class="status-msg"></div>
-        <ul class="pic-list" id="forsale-list">
-          <li class="empty-note">Loading…</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- SOLD ARCHIVE -->
-    <div class="hk-section">
-      <div class="hk-section-head">
-        <h2>Sold works archive</h2>
-        <span class="badge badge-warn" id="sold-count">Loading…</span>
-      </div>
-      <div class="hk-section-body">
-        <div id="sold-status" class="status-msg"></div>
-        <ul class="pic-list" id="sold-list">
+        <div id="paintings-status" class="status-msg"></div>
+        <ul class="pic-list" id="paintings-list">
           <li class="empty-note">Loading…</li>
         </ul>
       </div>
@@ -299,7 +286,7 @@
     // ── Init ──────────────────────────────────────────────────────────────────
 
     async function init() {
-      await Promise.all([loadSettings(), loadForsale(), loadSold()]);
+      await Promise.all([loadSettings(), loadPaintings()]);
     }
 
     // ── Site settings (profile/bio) ───────────────────────────────────────────
@@ -400,70 +387,50 @@
 
     // ── Paintings ─────────────────────────────────────────────────────────────
 
-    async function loadForsale() {
+    async function loadPaintings() {
       try {
         const res = await fetch(
-          SUPABASE_URL + '/rest/v1/paintings?status=eq.forsale&order=created_at.desc',
+          SUPABASE_URL + '/rest/v1/paintings?order=created_at.desc',
           { headers: HEADERS }
         );
         const items = await res.json();
-        renderForsale(items);
+        renderPaintings(items);
       } catch(e) {
-        showStatus('add-status', 'error', 'Could not load paintings.');
+        showStatus('paintings-status', 'error', 'Could not load paintings.');
       }
     }
 
-    async function loadSold() {
-      try {
-        const res = await fetch(
-          SUPABASE_URL + '/rest/v1/paintings?status=eq.sold&order=created_at.desc',
-          { headers: HEADERS }
-        );
-        const items = await res.json();
-        renderSold(items);
-      } catch(e) {}
-    }
-
-    function renderForsale(items) {
-      const list = document.getElementById('forsale-list');
-      document.getElementById('forsale-count').textContent = items.length + ' paintings';
-      if (!items.length) { list.innerHTML = '<li class="empty-note">No paintings for sale yet.</li>'; return; }
+    function renderPaintings(items) {
+      const list = document.getElementById('paintings-list');
+      const forsaleCount = items.filter(i => i.status === 'forsale').length;
+      const soldCount = items.filter(i => i.status === 'sold').length;
+      document.getElementById('paintings-count').textContent =
+        items.length + ' paintings · ' + forsaleCount + ' for sale · ' + soldCount + ' sold';
+      if (!items.length) { list.innerHTML = '<li class="empty-note">No paintings yet.</li>'; return; }
       list.innerHTML = '';
       items.forEach(item => {
+        const isSold = item.status === 'sold';
         const dims = (item.width_mm && item.height_mm) ? item.width_mm + ' × ' + item.height_mm + ' mm' : '';
-        const meta = [item.medium, dims, item.year, '£' + Number(item.price).toLocaleString('en-GB')].filter(Boolean).join(' · ');
+        const metaParts = isSold
+          ? [item.medium, item.year]
+          : [item.medium, dims, item.year, '£' + Number(item.price).toLocaleString('en-GB')];
+        const meta = metaParts.filter(Boolean).join(' · ');
+        const statusBadge = isSold
+          ? '<span class="badge badge-sold">Sold</span>'
+          : '<span class="badge badge-info">For sale</span>';
+        const statusBtn = isSold
+          ? `<button class="btn btn-sm btn-coast" onclick="markAsForSale('${item.id}', '${escHtml(item.title)}')">Mark as for sale</button>`
+          : `<button class="btn btn-sm btn-sold" onclick="markAsSold('${item.id}', '${escHtml(item.title)}')">Mark as sold</button>`;
         const li = document.createElement('li');
         li.className = 'pic-item';
         li.innerHTML = `
           <img class="pic-thumb" src="${item.image_url}" alt="${item.title}" onerror="this.style.opacity=0.3">
           <div class="pic-info">
-            <p class="pic-title">${item.title}</p>
+            <p class="pic-title">${item.title} ${statusBadge}</p>
             <p class="pic-meta">${meta}</p>
           </div>
           <div class="pic-actions">
-            <button class="btn btn-sm btn-sold" onclick="markAsSold('${item.id}', '${escHtml(item.title)}')">Mark sold</button>
-            <button class="btn btn-sm btn-danger" onclick="removePainting('${item.id}', '${escHtml(item.title)}')">Remove</button>
-          </div>`;
-        list.appendChild(li);
-      });
-    }
-
-    function renderSold(items) {
-      const list = document.getElementById('sold-list');
-      document.getElementById('sold-count').textContent = items.length + ' paintings';
-      if (!items.length) { list.innerHTML = '<li class="empty-note">No sold works yet.</li>'; return; }
-      list.innerHTML = '';
-      items.forEach(item => {
-        const meta = [item.medium, item.year].filter(Boolean).join(' · ');
-        const li = document.createElement('li');
-        li.className = 'pic-item';
-        li.innerHTML = `
-          <img class="pic-thumb" src="${item.image_url}" alt="${item.title}" onerror="this.style.opacity=0.3">
-          <div class="pic-info">
-            <p class="pic-title">${item.title}</p>
-            <p class="pic-meta">${meta}</p>
-          </div>
-          <div class="pic-actions">
+            ${statusBtn}
             <button class="btn btn-sm btn-danger" onclick="removePainting('${item.id}', '${escHtml(item.title)}')">Remove</button>
           </div>`;
         list.appendChild(li);
@@ -547,7 +514,7 @@
         ['new-title','new-price','new-medium','new-year','new-width','new-height'].forEach(id => document.getElementById(id).value = '');
         document.getElementById('new-image').value = '';
         document.getElementById('preview-img').style.display = 'none';
-        await Promise.all([loadForsale(), loadSold()]);
+        await loadPaintings();
 
       } catch(e) {
         showStatus('add-status', 'error', 'Error: ' + e.message);
@@ -559,30 +526,44 @@
 
     async function markAsSold(id, title) {
       if (!confirm('Mark "' + title + '" as sold?')) return;
-      showStatus('forsale-status', 'loading', 'Marking "' + title + '" as sold…');
+      showStatus('paintings-status', 'loading', 'Marking "' + title + '" as sold…');
       try {
         const res = await fetch(
           SUPABASE_URL + '/rest/v1/paintings?id=eq.' + id,
           { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ status: 'sold' }) }
         );
         if (!res.ok) throw new Error('Update failed');
-        showStatus('forsale-status', 'success', '✓ "' + title + '" moved to Sold.');
-        await Promise.all([loadForsale(), loadSold()]);
-      } catch(e) { showStatus('forsale-status', 'error', 'Error: ' + e.message); }
+        showStatus('paintings-status', 'success', '✓ "' + title + '" marked as sold.');
+        await loadPaintings();
+      } catch(e) { showStatus('paintings-status', 'error', 'Error: ' + e.message); }
+    }
+
+    async function markAsForSale(id, title) {
+      if (!confirm('Mark "' + title + '" as for sale?')) return;
+      showStatus('paintings-status', 'loading', 'Marking "' + title + '" as for sale…');
+      try {
+        const res = await fetch(
+          SUPABASE_URL + '/rest/v1/paintings?id=eq.' + id,
+          { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ status: 'forsale' }) }
+        );
+        if (!res.ok) throw new Error('Update failed');
+        showStatus('paintings-status', 'success', '✓ "' + title + '" marked as for sale.');
+        await loadPaintings();
+      } catch(e) { showStatus('paintings-status', 'error', 'Error: ' + e.message); }
     }
 
     async function removePainting(id, title) {
       if (!confirm('Permanently remove "' + title + '" from the site?')) return;
-      showStatus('forsale-status', 'loading', 'Removing…');
+      showStatus('paintings-status', 'loading', 'Removing…');
       try {
         const res = await fetch(
           SUPABASE_URL + '/rest/v1/paintings?id=eq.' + id,
           { method: 'DELETE', headers: HEADERS }
         );
         if (!res.ok) throw new Error('Delete failed');
-        showStatus('forsale-status', 'success', '✓ "' + title + '" removed.');
-        await Promise.all([loadForsale(), loadSold()]);
-      } catch(e) { showStatus('forsale-status', 'error', 'Error: ' + e.message); }
+        showStatus('paintings-status', 'success', '✓ "' + title + '" removed.');
+        await loadPaintings();
+      } catch(e) { showStatus('paintings-status', 'error', 'Error: ' + e.message); }
     }
 
     // ── Utilities ─────────────────────────────────────────────────────────────
