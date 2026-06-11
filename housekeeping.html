@@ -45,8 +45,13 @@
     .upload-area .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
     .upload-area p { font-size: 0.88rem; color: var(--stone); }
     .upload-area .preview-img { max-height: 200px; margin: 0 auto 1rem; display: none; box-shadow: var(--shadow-card); }
+    .profile-thumbs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .profile-thumb-wrap { text-align: center; }
+    .profile-thumb-wrap label { display: block; font-size: 0.78rem; color: var(--stone); margin-bottom: 0.5rem; letter-spacing: 0.06em; text-transform: uppercase; }
+    .profile-thumb-wrap img { width: 100%; aspect-ratio: 3/2; object-fit: cover; box-shadow: var(--shadow-card); cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
+    .profile-thumb-wrap img:hover { border-color: var(--coast); }
+    .profile-thumb-wrap input { display: none; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
     .btn-sm { font-size: 0.72rem; padding: 0.4rem 0.9rem; letter-spacing: 0.08em; }
     .btn-danger { border-color: #b91c1c; color: #b91c1c; }
     .btn-danger:hover { background: #b91c1c; color: white; }
@@ -67,8 +72,12 @@
     .empty-note { font-size: 0.88rem; color: var(--stone); font-style: italic; padding: 1rem 0; }
     .progress-wrap { background: var(--sand); height: 4px; margin-bottom: 1rem; display: none; }
     .progress-bar { height: 100%; background: var(--coast); width: 0%; transition: width 0.3s; }
+    textarea { width: 100%; min-height: 160px; padding: 0.75rem; font-family: var(--font-body); font-size: 0.9rem; border: 1px solid var(--sand); resize: vertical; background: var(--white); color: var(--ink); box-sizing: border-box; }
+    textarea:focus { outline: none; border-color: var(--coast); }
+    .hint { font-size: 0.78rem; color: var(--stone); margin-top: 0.4rem; }
     @media (max-width: 600px) {
-      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .profile-thumbs { grid-template-columns: 1fr; }
       .pic-actions { flex-direction: column; }
     }
   </style>
@@ -85,6 +94,42 @@
 
   <div class="hk-page">
 
+    <!-- PROFILE & BIOGRAPHY -->
+    <div class="hk-section">
+      <div class="hk-section-head">
+        <h2>Profile &amp; biography</h2>
+      </div>
+      <div class="hk-section-body">
+        <div id="profile-status" class="status-msg"></div>
+
+        <div class="profile-thumbs">
+          <div class="profile-thumb-wrap">
+            <label>Cover image (homepage)</label>
+            <img id="cover-preview" src="images/profile/cover.jpg" alt="Cover image"
+              onclick="document.getElementById('cover-file').click()" title="Click to change">
+            <input type="file" id="cover-file" accept="image/*" onchange="handleProfileUpload(this, 'cover_image_url', 'cover-preview')">
+          </div>
+          <div class="profile-thumb-wrap">
+            <label>Portrait photo</label>
+            <img id="profile-preview" src="images/profile/selfie.jpg" alt="Portrait photo"
+              onclick="document.getElementById('profile-file').click()" title="Click to change">
+            <input type="file" id="profile-file" accept="image/*" onchange="handleProfileUpload(this, 'profile_image_url', 'profile-preview')">
+          </div>
+        </div>
+        <p class="hint" style="margin-bottom:1.5rem;">Click either image to replace it. Changes appear on the website immediately.</p>
+
+        <div class="form-group">
+          <label for="bio-text">Biography text</label>
+          <textarea id="bio-text" placeholder="Write Jane's biography here…"></textarea>
+          <p class="hint">Each paragraph on a separate line. Plain text only.</p>
+        </div>
+        <button class="btn btn-filled" onclick="saveBio()" id="bio-btn" style="margin-top:1rem;">
+          Save biography
+        </button>
+      </div>
+    </div>
+
+    <!-- ADD NEW PAINTING -->
     <div class="hk-section">
       <div class="hk-section-head">
         <h2>Add a new painting for sale</h2>
@@ -136,6 +181,7 @@
       </div>
     </div>
 
+    <!-- CURRENTLY FOR SALE -->
     <div class="hk-section">
       <div class="hk-section-head">
         <h2>Currently for sale</h2>
@@ -149,6 +195,7 @@
       </div>
     </div>
 
+    <!-- SOLD ARCHIVE -->
     <div class="hk-section">
       <div class="hk-section-head">
         <h2>Sold works archive</h2>
@@ -174,9 +221,94 @@
       'Prefer': 'return=representation'
     };
 
+    // ── Init ──────────────────────────────────────────────────────────────────
+
     async function init() {
-      await Promise.all([loadForsale(), loadSold()]);
+      await Promise.all([loadSettings(), loadForsale(), loadSold()]);
     }
+
+    // ── Site settings (profile/bio) ───────────────────────────────────────────
+
+    async function loadSettings() {
+      try {
+        const res = await fetch(
+          SUPABASE_URL + '/rest/v1/site_settings?select=key,value',
+          { headers: HEADERS }
+        );
+        if (!res.ok) return;
+        const rows = await res.json();
+        const settings = Object.fromEntries(rows.map(r => [r.key, r.value]));
+        if (settings.cover_image_url)   document.getElementById('cover-preview').src   = settings.cover_image_url;
+        if (settings.profile_image_url) document.getElementById('profile-preview').src = settings.profile_image_url;
+        if (settings.bio_text)          document.getElementById('bio-text').value       = settings.bio_text;
+      } catch(e) {}
+    }
+
+    async function handleProfileUpload(input, settingKey, previewId) {
+      if (!input.files || !input.files[0]) return;
+      const file = input.files[0];
+      showStatus('profile-status', 'loading', 'Uploading image…');
+      try {
+        const ext      = file.name.split('.').pop().toLowerCase();
+        const filename = settingKey + '-' + Date.now() + '.' + ext;
+        const uploadRes = await fetch(
+          SUPABASE_URL + '/storage/v1/object/profile/' + filename,
+          {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_KEY,
+              'Content-Type': file.type,
+              'x-upsert': 'true'
+            },
+            body: file
+          }
+        );
+        if (!uploadRes.ok) {
+          const err = await uploadRes.json().catch(() => ({}));
+          throw new Error(err.message || 'Upload failed');
+        }
+        const image_url = SUPABASE_URL + '/storage/v1/object/public/profile/' + filename;
+        await upsertSetting(settingKey, image_url);
+        document.getElementById(previewId).src = image_url;
+        showStatus('profile-status', 'success', '✓ Image updated.');
+      } catch(e) {
+        showStatus('profile-status', 'error', 'Error: ' + e.message);
+      }
+    }
+
+    async function saveBio() {
+      const text = document.getElementById('bio-text').value.trim();
+      if (!text) { showStatus('profile-status', 'error', 'Please enter some biography text.'); return; }
+      const btn = document.getElementById('bio-btn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      showStatus('profile-status', 'loading', 'Saving biography…');
+      try {
+        await upsertSetting('bio_text', text);
+        showStatus('profile-status', 'success', '✓ Biography saved.');
+      } catch(e) {
+        showStatus('profile-status', 'error', 'Error: ' + e.message);
+      } finally {
+        btn.disabled = false; btn.textContent = 'Save biography';
+      }
+    }
+
+    async function upsertSetting(key, value) {
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/site_settings',
+        {
+          method: 'POST',
+          headers: { ...HEADERS, 'Prefer': 'resolution=merge-duplicates' },
+          body: JSON.stringify({ key, value })
+        }
+      );
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Save failed');
+      }
+    }
+
+    // ── Paintings ─────────────────────────────────────────────────────────────
 
     async function loadForsale() {
       try {
@@ -277,7 +409,6 @@
       showProgress(0);
 
       try {
-        // 1. Upload image to Supabase Storage
         const ext      = file.name.split('.').pop().toLowerCase();
         const filename = Date.now() + '-' + title.toLowerCase().replace(/[^a-z0-9]/g, '-') + '.' + ext;
         const uploadRes = await fetch(
@@ -299,11 +430,9 @@
         }
         showProgress(60);
 
-        // 2. Build public URL
         const image_url = SUPABASE_URL + '/storage/v1/object/public/gallery/' + filename;
-
-        // 3. Insert row into paintings table
         showStatus('add-status', 'loading', 'Image uploaded. Saving painting details…');
+
         const row = {
           title,
           price:     Number(price),
@@ -325,11 +454,9 @@
         showProgress(100);
 
         showStatus('add-status', 'success', '✓ "' + title + '" added to For Sale.');
-        // Reset form
         ['new-title','new-price','new-medium','new-year','new-width','new-height'].forEach(id => document.getElementById(id).value = '');
         document.getElementById('new-image').value = '';
         document.getElementById('preview-img').style.display = 'none';
-        // Reload lists
         await Promise.all([loadForsale(), loadSold()]);
 
       } catch(e) {
@@ -367,6 +494,8 @@
         await Promise.all([loadForsale(), loadSold()]);
       } catch(e) { showStatus('forsale-status', 'error', 'Error: ' + e.message); }
     }
+
+    // ── Utilities ─────────────────────────────────────────────────────────────
 
     function showStatus(id, type, message) {
       const el = document.getElementById(id);
