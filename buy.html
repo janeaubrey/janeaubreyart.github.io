@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Purchase Enquiry — Jane Doe, Cornwall</title>
+  <title>Purchase Enquiry — Jane Aubrey Art, Cornwall</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .buy-layout {
@@ -99,7 +99,7 @@
 <body>
 
   <nav>
-    <a href="index.html" class="nav-brand">Jane <span>Doe</span></a>
+    <a href="index.html" class="nav-brand">Jane Aubrey <span>Art</span></a>
     <button class="nav-toggle" aria-label="Open menu">
       <span></span><span></span><span></span>
     </button>
@@ -184,7 +184,7 @@
             <input type="checkbox" id="f-gdpr" name="gdpr" required
               style="width:auto;margin-top:0.2rem;flex-shrink:0;">
             <label for="f-gdpr" style="text-transform:none;font-size:0.85rem;letter-spacing:0;color:var(--slate);">
-              I agree that Jane Doe may use the details above to process this enquiry and contact me in relation to it, as described in the <a href="privacy.html" style="color:var(--coast);">Privacy Policy</a>. <span class="required">*</span>
+              I agree that Jane Aubrey may use the details above to process this enquiry and contact me in relation to it, as described in the <a href="privacy.html" style="color:var(--coast);">Privacy Policy</a>. <span class="required">*</span>
             </label>
           </div>
 
@@ -210,8 +210,8 @@
   </main>
 
   <footer>
-    <p>&copy; <span id="yr"></span> Jane Doe. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
-    <p style="margin-top:0.5rem;">Jane Doe, Studio address, Penzance, Cornwall, TR18 XXX &nbsp;|&nbsp; jane@example.com</p>
+    <p>&copy; <span id="yr"></span> Jane Aubrey Art. All rights reserved. &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp; <a href="contact.html">Contact</a></p>
+    <p style="margin-top:0.5rem;">Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW &nbsp;|&nbsp; jane.mynne@live.co.uk</p>
   </footer>
 
   <div id="cookie-banner" role="region" aria-label="Cookie consent">
@@ -224,13 +224,16 @@
 
   <script src="js/main.js"></script>
   <script>
+    const SUPABASE_URL = 'https://pmkitmlcezwcogsgmmxp.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_I4AGhe_kkZ-bXDML9dWm8A_Il5kQ5EU';
+
     document.getElementById('yr').textContent = new Date().getFullYear();
 
-    // --- Populate form from URL params ---
+    // Populate from URL params
     const params = new URLSearchParams(location.search);
     const title = params.get('title') || 'Selected work';
     const price = params.get('price') || '';
-    const id    = params.get('id') || '';
+    const id    = params.get('id')    || '';
 
     document.getElementById('artwork-title').textContent = title;
     document.getElementById('artwork-price').textContent = price ? '£' + Number(price).toLocaleString('en-GB') : '';
@@ -238,32 +241,29 @@
     document.getElementById('f-artwork-title').value = title;
     document.getElementById('f-artwork-price').value = price;
 
-    // Try to load artwork image from forsale.json
-    fetch('data/forsale.json')
-      .then(r => r.json())
-      .then(items => {
-        const item = items.find(i => String(i.id) === id);
-        if (item) {
+    // Load artwork image from Supabase
+    if (id) {
+      fetch(
+        SUPABASE_URL + '/rest/v1/paintings?id=eq.' + id + '&select=image_url,title',
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+      ).then(r => r.json()).then(items => {
+        if (items && items[0] && items[0].image_url) {
           const img = document.getElementById('artwork-img');
-          img.src = 'images/gallery/' + item.image;
-          img.alt = item.title;
+          img.src = items[0].image_url;
+          img.alt = items[0].title;
         }
       }).catch(() => {});
+    }
 
-    // --- Form submission ---
-    // NOTE: This form needs a backend or form service to actually send emails.
-    // Options: Formspree (free tier), Netlify Forms, or a simple PHP mailer.
-    // Replace the action URL below with your chosen service.
-    // See housekeeping.html for setup instructions.
-
-    const form = document.getElementById('buy-form');
+    // Form submission
+    const form   = document.getElementById('buy-form');
     const errBox = document.getElementById('form-error');
+    const btn    = form.querySelector('button[type="submit"]');
 
     form.addEventListener('submit', async e => {
       e.preventDefault();
       errBox.style.display = 'none';
 
-      // Basic validation
       const name    = document.getElementById('f-name').value.trim();
       const email   = document.getElementById('f-email').value.trim();
       const address = document.getElementById('f-address').value.trim();
@@ -275,34 +275,28 @@
         return;
       }
 
-      // -------------------------------------------------------
-      // OPTION A: Formspree — sign up at formspree.io, get your
-      // form endpoint, and replace the URL below:
-      //
-      // const response = await fetch('https://formspree.io/f/YOUR_ID', {
-      //   method: 'POST',
-      //   headers: { 'Accept': 'application/json' },
-      //   body: new FormData(form)
-      // });
-      // if (response.ok) { showSuccess(); } else { showError(); }
-      //
-      // OPTION B: mailto fallback (works without a backend,
-      // opens user's email client — less elegant but zero setup):
-      // -------------------------------------------------------
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
 
-      // TEMPORARY: mailto fallback until a form service is configured
-      const subject = encodeURIComponent(`Purchase enquiry: ${title}`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\nPhone: ${document.getElementById('f-phone').value}\n\nDelivery address:\n${address}\n\nArtwork: ${title}\nPrice: £${price}\n\nNotes:\n${document.getElementById('f-message').value}`
-      );
-      window.location.href = `mailto:jane@example.com?subject=${subject}&body=${body}`;
-      showSuccess();
+      try {
+        const res = await fetch('https://formspree.io/f/xzdqaayy', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form)
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('success-msg').style.display = 'block';
+        } else {
+          throw new Error('server error');
+        }
+      } catch(err) {
+        errBox.textContent = 'Sorry, something went wrong. Please email jane.mynne@live.co.uk directly.';
+        errBox.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Send enquiry';
+      }
     });
-
-    function showSuccess() {
-      form.style.display = 'none';
-      document.getElementById('success-msg').style.display = 'block';
-    }
   </script>
 </body>
 </html>

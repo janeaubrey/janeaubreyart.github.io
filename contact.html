@@ -181,25 +181,46 @@
   <script src="js/main.js"></script>
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
-    const form = document.getElementById('contact-form');
+    const form   = document.getElementById('contact-form');
     const errBox = document.getElementById('c-error');
-    form.addEventListener('submit', e => {
+    const btn    = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async e => {
       e.preventDefault();
       errBox.style.display = 'none';
+
       const name    = document.getElementById('c-name').value.trim();
       const email   = document.getElementById('c-email').value.trim();
       const message = document.getElementById('c-message').value.trim();
       const gdpr    = document.getElementById('c-gdpr').checked;
+
       if (!name || !email || !message || !gdpr) {
         errBox.textContent = 'Please fill in all required fields and accept the privacy notice.';
         errBox.style.display = 'block';
         return;
       }
-      const subject = encodeURIComponent('Website contact: ' + document.getElementById('c-subject').value);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
-      window.location.href = `mailto:jane.mynne@live.co.uk?subject=${subject}&body=${body}`;
-      form.style.display = 'none';
-      document.getElementById('success-msg').style.display = 'block';
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch('https://formspree.io/f/maqzddab', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form)
+        });
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('success-msg').style.display = 'block';
+        } else {
+          throw new Error('server error');
+        }
+      } catch(err) {
+        errBox.textContent = 'Sorry, something went wrong. Please email jane.mynne@live.co.uk directly.';
+        errBox.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Send message';
+      }
     });
   </script>
 </body>
