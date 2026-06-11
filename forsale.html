@@ -88,39 +88,53 @@
 
   <script src="js/main.js"></script>
   <script>
+    const SUPABASE_URL = 'https://pmkitmlcezwcogsgmmxp.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_I4AGhe_kkZ-bXDML9dWm8A_Il5kQ5EU';
+
     document.getElementById('yr').textContent = new Date().getFullYear();
-    fetch('data/forsale.json')
-      .then(r => r.json())
-      .then(items => {
-        const grid = document.getElementById('gallery');
-        const empty = document.getElementById('empty');
-        if (!items.length) return;
-        empty.remove();
-        items.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'gallery-card';
-          card.innerHTML = `
-            <img src="images/gallery/${item.image}" alt="${item.title}"
-              data-lightbox="images/gallery/${item.image}" data-title="${item.title}" loading="lazy">
-            <div class="gallery-card-body">
-              <h3 class="gallery-card-title">${item.title}</h3>
-              <p class="gallery-card-meta">${item.medium || ''} ${item.dimensions ? '· ' + item.dimensions : ''}</p>
-              <p class="gallery-card-price">£${Number(item.price).toLocaleString('en-GB')}</p>
-              <a href="buy.html?id=${item.id}&title=${encodeURIComponent(item.title)}&price=${item.price}"
-                class="btn btn-coast" style="font-size:0.75rem;padding:0.55rem 1.1rem;">Enquire to buy</a>
-            </div>`;
-          grid.appendChild(card);
+
+    async function loadPaintings() {
+      const res = await fetch(
+        SUPABASE_URL + '/rest/v1/paintings?status=eq.forsale&order=created_at.desc',
+        { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
+      );
+      if (!res.ok) return;
+      const items = await res.json();
+      const grid  = document.getElementById('gallery');
+      const empty = document.getElementById('empty');
+      if (!items.length) return;
+      empty.remove();
+      items.forEach(item => {
+        const dims = (item.width_mm && item.height_mm)
+          ? item.width_mm + ' × ' + item.height_mm + ' mm'
+          : '';
+        const meta = [item.medium, dims].filter(Boolean).join(' · ');
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.innerHTML = `
+          <img src="${item.image_url}" alt="${item.title}"
+            data-lightbox="${item.image_url}" data-title="${item.title}" loading="lazy">
+          <div class="gallery-card-body">
+            <h3 class="gallery-card-title">${item.title}</h3>
+            <p class="gallery-card-meta">${meta}</p>
+            <p class="gallery-card-price">£${Number(item.price).toLocaleString('en-GB')}</p>
+            <a href="buy.html?id=${item.id}&title=${encodeURIComponent(item.title)}&price=${item.price}"
+              class="btn btn-coast" style="font-size:0.75rem;padding:0.55rem 1.1rem;">Enquire to buy</a>
+          </div>`;
+        grid.appendChild(card);
+      });
+      document.querySelectorAll('[data-lightbox]').forEach(el => {
+        el.style.cursor = 'zoom-in';
+        el.addEventListener('click', () => {
+          const lb = document.getElementById('lightbox');
+          lb.querySelector('img').src = el.dataset.lightbox;
+          lb.classList.add('open');
+          document.body.style.overflow = 'hidden';
         });
-        document.querySelectorAll('[data-lightbox]').forEach(el => {
-          el.style.cursor = 'zoom-in';
-          el.addEventListener('click', () => {
-            const lb = document.getElementById('lightbox');
-            lb.querySelector('img').src = el.dataset.lightbox;
-            lb.classList.add('open');
-            document.body.style.overflow = 'hidden';
-          });
-        });
-      }).catch(() => {});
+      });
+    }
+
+    loadPaintings().catch(() => {});
   </script>
 </body>
 </html>
