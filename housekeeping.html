@@ -105,13 +105,13 @@
         <div class="profile-thumbs">
           <div class="profile-thumb-wrap">
             <label>Cover image (homepage)</label>
-            <img id="cover-preview" src="images/profile/cover.jpg" alt="Cover image"
+            <img id="cover-preview" src="" alt="Cover image"
               onclick="document.getElementById('cover-file').click()" title="Click to change">
             <input type="file" id="cover-file" accept="image/*" onchange="handleProfileUpload(this, 'cover_image_url', 'cover-preview')">
           </div>
           <div class="profile-thumb-wrap">
             <label>Portrait photo</label>
-            <img id="profile-preview" src="images/profile/selfie.jpg" alt="Portrait photo"
+            <img id="profile-preview" src="" alt="Portrait photo"
               onclick="document.getElementById('profile-file').click()" title="Click to change">
             <input type="file" id="profile-file" accept="image/*" onchange="handleProfileUpload(this, 'profile_image_url', 'profile-preview')">
           </div>
@@ -119,12 +119,46 @@
         <p class="hint" style="margin-bottom:1.5rem;">Click either image to replace it. Changes appear on the website immediately.</p>
 
         <div class="form-group">
-          <label for="bio-text">Biography text</label>
+          <label for="artist-tagline">Tagline (homepage)</label>
+          <input type="text" id="artist-tagline" placeholder="e.g. Light, land, &amp; sea.">
+          <p class="hint">Short phrase shown on the homepage. Use commas to create line breaks.</p>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label for="artist-intro">Intro text (homepage)</label>
+          <textarea id="artist-intro" style="min-height:80px;" placeholder="Short paragraph shown on the homepage…"></textarea>
+        </div>
+
+        <div class="form-group" style="margin-top:1rem;">
+          <label for="bio-text">Biography</label>
           <textarea id="bio-text" placeholder="Write Jane's biography here…"></textarea>
           <p class="hint">Each paragraph on a separate line. Plain text only.</p>
         </div>
-        <button class="btn btn-filled" onclick="saveBio()" id="bio-btn" style="margin-top:1rem;">
-          Save biography
+
+        <div class="form-row" style="margin-top:1rem;">
+          <div class="form-group">
+            <label for="based-in">Based in</label>
+            <input type="text" id="based-in" placeholder="e.g. Mawla, Redruth, Cornwall">
+          </div>
+          <div class="form-group">
+            <label for="studio-visits">Studio visits</label>
+            <input type="text" id="studio-visits" placeholder="e.g. By appointment">
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-top:1rem;">
+          <div class="form-group">
+            <label for="commissions">Commissions</label>
+            <input type="text" id="commissions" placeholder="e.g. Currently open">
+          </div>
+          <div class="form-group">
+            <label for="footer-address">Footer address</label>
+            <input type="text" id="footer-address" placeholder="Name, address, email">
+          </div>
+        </div>
+
+        <button class="btn btn-filled" onclick="saveSettings()" id="bio-btn" style="margin-top:1.5rem;">
+          Save all changes
         </button>
       </div>
     </div>
@@ -237,10 +271,16 @@
         );
         if (!res.ok) return;
         const rows = await res.json();
-        const settings = Object.fromEntries(rows.map(r => [r.key, r.value]));
-        if (settings.cover_image_url)   document.getElementById('cover-preview').src   = settings.cover_image_url;
-        if (settings.profile_image_url) document.getElementById('profile-preview').src = settings.profile_image_url;
-        if (settings.bio_text)          document.getElementById('bio-text').value       = settings.bio_text;
+        const s = Object.fromEntries(rows.map(r => [r.key, r.value]));
+        if (s.cover_image_url)   document.getElementById('cover-preview').src   = s.cover_image_url;
+        if (s.profile_image_url) document.getElementById('profile-preview').src = s.profile_image_url;
+        if (s.artist_tagline)    document.getElementById('artist-tagline').value = s.artist_tagline;
+        if (s.artist_intro)      document.getElementById('artist-intro').value   = s.artist_intro;
+        if (s.bio_text)          document.getElementById('bio-text').value        = s.bio_text;
+        if (s.based_in)          document.getElementById('based-in').value        = s.based_in;
+        if (s.studio_visits)     document.getElementById('studio-visits').value   = s.studio_visits;
+        if (s.commissions)       document.getElementById('commissions').value     = s.commissions;
+        if (s.footer_address)    document.getElementById('footer-address').value  = s.footer_address;
       } catch(e) {}
     }
 
@@ -277,19 +317,28 @@
       }
     }
 
-    async function saveBio() {
-      const text = document.getElementById('bio-text').value.trim();
-      if (!text) { showStatus('profile-status', 'error', 'Please enter some biography text.'); return; }
+    async function saveSettings() {
       const btn = document.getElementById('bio-btn');
       btn.disabled = true; btn.textContent = 'Saving…';
-      showStatus('profile-status', 'loading', 'Saving biography…');
+      showStatus('profile-status', 'loading', 'Saving…');
       try {
-        await upsertSetting('bio_text', text);
-        showStatus('profile-status', 'success', '✓ Biography saved.');
+        const fields = [
+          ['artist_tagline', document.getElementById('artist-tagline').value.trim()],
+          ['artist_intro',   document.getElementById('artist-intro').value.trim()],
+          ['bio_text',       document.getElementById('bio-text').value.trim()],
+          ['based_in',       document.getElementById('based-in').value.trim()],
+          ['studio_visits',  document.getElementById('studio-visits').value.trim()],
+          ['commissions',    document.getElementById('commissions').value.trim()],
+          ['footer_address', document.getElementById('footer-address').value.trim()],
+        ];
+        for (const [key, value] of fields) {
+          if (value) await upsertSetting(key, value);
+        }
+        showStatus('profile-status', 'success', '✓ All changes saved.');
       } catch(e) {
         showStatus('profile-status', 'error', 'Error: ' + e.message);
       } finally {
-        btn.disabled = false; btn.textContent = 'Save biography';
+        btn.disabled = false; btn.textContent = 'Save all changes';
       }
     }
 

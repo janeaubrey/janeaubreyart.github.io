@@ -97,6 +97,8 @@
       margin-bottom: 0.2rem;
     }
     .bio-detail-value { font-family: var(--font-display); font-size: 1.1rem; color: var(--ink); }
+    .page-loading { opacity: 0; transition: opacity 0.3s; }
+    .page-ready { opacity: 1; }
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; min-height: auto; }
       .hero-image { height: 55vw; }
@@ -123,17 +125,14 @@
     </ul>
   </nav>
 
-  <section class="hero">
+  <section class="hero page-loading" id="main-content">
     <div class="hero-image">
-      <img id="cover-img" src="images/profile/cover.jpg" alt="Jane Aubrey watercolour" loading="eager">
+      <img id="cover-img" src="" alt="Jane Aubrey artwork" loading="eager">
     </div>
     <div class="hero-content">
-      <p class="hero-eyebrow">Watercolour Painter — Cornwall</p>
-      <h1 class="hero-title">Light,<br><em>land</em>,<br>&amp; sea.</h1>
-      <p class="hero-body">
-        Original watercolours inspired by the Cornish landscape — its ever-changing light,
-        ancient moorland, and the quiet drama of the Atlantic coast.
-      </p>
+      <p class="hero-eyebrow">Painter — Cornwall</p>
+      <h1 class="hero-title" id="artist-tagline"></h1>
+      <p class="hero-body" id="artist-intro"></p>
       <div class="hero-cta">
         <a href="forsale.html" class="btn btn-filled">View works for sale</a>
         <a href="#biography" class="btn">Read biography</a>
@@ -146,45 +145,26 @@
       <div class="bio-section">
 
         <div class="bio-portrait">
-          <img id="profile-img" src="images/profile/selfie.jpg" alt="Portrait of Jane Aubrey">
+          <img id="profile-img" src="" alt="Portrait of Jane Aubrey">
           <p class="bio-portrait-caption">Jane Aubrey — Mawla, Cornwall</p>
         </div>
 
         <div class="bio-text">
           <h2>About the artist</h2>
-          <div id="bio-paragraphs">
-            <p>
-              Jane Aubrey is a watercolour painter based in Mawla, near Redruth, in the
-              heart of Cornwall. Her work is rooted in the landscape of the far west —
-              the moors, the cliffs, and the ever-present Atlantic light.
-            </p>
-            <p>
-              Working in watercolour, Jane creates pieces that balance careful observation
-              with a personal response to place. Each work begins with time spent outdoors
-              in the Cornish landscape before being developed in her studio at Carn Garth.
-            </p>
-            <p>
-              Her paintings are available to purchase directly from the studio.
-              She welcomes visitors by appointment and is happy to discuss commissions.
-            </p>
-          </div>
+          <div id="bio-paragraphs"></div>
 
           <div class="bio-details">
             <div>
               <p class="bio-detail-label">Based in</p>
-              <p class="bio-detail-value">Mawla, Redruth, Cornwall</p>
-            </div>
-            <div>
-              <p class="bio-detail-label">Medium</p>
-              <p class="bio-detail-value">Watercolour</p>
+              <p class="bio-detail-value" id="based-in"></p>
             </div>
             <div>
               <p class="bio-detail-label">Studio visits</p>
-              <p class="bio-detail-value">By appointment</p>
+              <p class="bio-detail-value" id="studio-visits"></p>
             </div>
             <div>
               <p class="bio-detail-label">Commissions</p>
-              <p class="bio-detail-value">Currently open</p>
+              <p class="bio-detail-value" id="commissions"></p>
             </div>
           </div>
 
@@ -203,7 +183,7 @@
       <a href="privacy.html">Privacy Policy</a> &nbsp;|&nbsp;
       <a href="contact.html">Contact</a>
     </p>
-    <p style="margin-top:0.5rem;">Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW &nbsp;|&nbsp; jane.mynne@live.co.uk</p>
+    <p style="margin-top:0.5rem;" id="footer-address"></p>
   </footer>
 
   <div id="cookie-banner" role="region" aria-label="Cookie consent">
@@ -230,23 +210,45 @@
           SUPABASE_URL + '/rest/v1/site_settings?select=key,value',
           { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
         );
-        if (!res.ok) return;
+        if (!res.ok) throw new Error('fetch failed');
         const rows = await res.json();
-        const settings = Object.fromEntries(rows.map(r => [r.key, r.value]));
+        const s = Object.fromEntries(rows.map(r => [r.key, r.value]));
 
-        if (settings.cover_image_url) {
-          document.getElementById('cover-img').src = settings.cover_image_url;
+        if (s.cover_image_url)  document.getElementById('cover-img').src   = s.cover_image_url;
+        if (s.profile_image_url) document.getElementById('profile-img').src = s.profile_image_url;
+
+        if (s.artist_tagline) {
+          // Render the tagline — wrap the middle word in <em> if it contains a comma pattern
+          document.getElementById('artist-tagline').innerHTML = s.artist_tagline
+            .replace(/,\s*/g, ',<br>');
         }
-        if (settings.profile_image_url) {
-          document.getElementById('profile-img').src = settings.profile_image_url;
-        }
-        if (settings.bio_text) {
-          const paras = settings.bio_text.split('\n').filter(p => p.trim());
+
+        if (s.artist_intro)   document.getElementById('artist-intro').textContent  = s.artist_intro;
+        if (s.based_in)       document.getElementById('based-in').textContent      = s.based_in;
+        if (s.studio_visits)  document.getElementById('studio-visits').textContent = s.studio_visits;
+        if (s.commissions)    document.getElementById('commissions').textContent   = s.commissions;
+        if (s.footer_address) document.getElementById('footer-address').textContent = s.footer_address;
+
+        if (s.bio_text) {
+          const paras = s.bio_text.split('\n').filter(p => p.trim());
           document.getElementById('bio-paragraphs').innerHTML =
             paras.map(p => '<p>' + p + '</p>').join('');
         }
+
       } catch(e) {
-        // Silently fall back to hardcoded content
+        // If Supabase is unreachable, show fallback content
+        document.getElementById('artist-tagline').innerHTML = 'Light,<br><em>land</em>,<br>&amp; sea.';
+        document.getElementById('artist-intro').textContent = 'Original watercolours inspired by the Cornish landscape — its ever-changing light, ancient moorland, and the quiet drama of the Atlantic coast.';
+        document.getElementById('bio-paragraphs').innerHTML = '<p>Jane Aubrey is a watercolour painter based in Mawla, near Redruth, in the heart of Cornwall.</p>';
+        document.getElementById('based-in').textContent     = 'Mawla, Redruth, Cornwall';
+        document.getElementById('studio-visits').textContent = 'By appointment';
+        document.getElementById('commissions').textContent  = 'Currently open';
+        document.getElementById('footer-address').textContent = 'Jane Aubrey, Carn Garth, Mawla, Redruth, Cornwall, TR16 5DW | jane.mynne@live.co.uk';
+      } finally {
+        // Reveal page either way
+        const mc = document.getElementById('main-content');
+        mc.classList.remove('page-loading');
+        mc.classList.add('page-ready');
       }
     }
 
