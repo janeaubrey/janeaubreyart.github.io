@@ -1,17 +1,35 @@
 name: Supabase Keep-Alive
-
 on:
   schedule:
     - cron: '0 6 * * 0,3'  # Sunday and Wednesday, 6am UTC
   workflow_dispatch:        # lets you trigger it manually to test
 
+permissions:
+  contents: write            # needed so this workflow can commit the heartbeat file
+
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Ping Supabase REST API
         run: |
           curl -s -o /dev/null -w "%{http_code}" \
             "https://pmkitmlcezwcogsgmmxp.supabase.co/rest/v1/paintings?select=id&limit=1" \
             -H "apikey: sb_publishable_I4AGhe_kkZ-bXDML9dWm8A_Il5kQ5EU" \
             -H "Authorization: Bearer sb_publishable_I4AGhe_kkZ-bXDML9dWm8A_Il5kQ5EU"
+
+      - name: Record heartbeat
+        run: |
+          mkdir -p keepalive
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > keepalive/last-run.txt
+
+      - name: Commit heartbeat
+        run: |
+          git config user.name "keep-alive-bot"
+          git config user.email "actions@github.com"
+          git add keepalive/last-run.txt
+          git diff --quiet --cached || git commit -m "chore: keep-alive heartbeat"
+          git push
